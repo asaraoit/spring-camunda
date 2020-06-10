@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0amkczc" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.0.0">
+  <bpmn:process id="countersign" name="Countersign" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1964mi7</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_1s2dmsd" name="提交申请" camunda:assignee="#{assignee}">
+      <bpmn:incoming>Flow_1964mi7</bpmn:incoming>
+      <bpmn:outgoing>Flow_19ei7yi</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1964mi7" sourceRef="StartEvent_1" targetRef="Activity_1s2dmsd" />
+    <bpmn:sequenceFlow id="Flow_19ei7yi" sourceRef="Activity_1s2dmsd" targetRef="Activity_0xrswpv" />
+    <bpmn:userTask id="Activity_0xrswpv" name="会签任务" camunda:assignee="#{assignee}">
+      <bpmn:incoming>Flow_19ei7yi</bpmn:incoming>
+      <bpmn:outgoing>Flow_1wiqyfs</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics camunda:collection="assigneeList" camunda:elementVariable="assignee">
+        <bpmn:completionCondition xsi:type="bpmn:tFormalExpression">${nrOfCompletedInstances&gt;=3}</bpmn:completionCondition>
+      </bpmn:multiInstanceLoopCharacteristics>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0phnc99" name="End">
+      <bpmn:incoming>Flow_170vmhq</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_170vmhq" sourceRef="Activity_0ionylq" targetRef="Event_0phnc99" />
+    <bpmn:userTask id="Activity_0ionylq" name="总经理审批" camunda:assignee="张三丰">
+      <bpmn:incoming>Flow_1wiqyfs</bpmn:incoming>
+      <bpmn:outgoing>Flow_170vmhq</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1wiqyfs" sourceRef="Activity_0xrswpv" targetRef="Activity_0ionylq" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="countersign">
+      <bpmndi:BPMNEdge id="Flow_1964mi7_di" bpmnElement="Flow_1964mi7">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19ei7yi_di" bpmnElement="Flow_19ei7yi">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="450" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_170vmhq_di" bpmnElement="Flow_170vmhq">
+        <di:waypoint x="730" y="117" />
+        <di:waypoint x="782" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wiqyfs_di" bpmnElement="Flow_1wiqyfs">
+        <di:waypoint x="550" y="117" />
+        <di:waypoint x="630" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="185" y="142" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0skwka3_di" bpmnElement="Activity_1s2dmsd">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0df6l3l_di" bpmnElement="Activity_0xrswpv">
+        <dc:Bounds x="450" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0phnc99_di" bpmnElement="Event_0phnc99">
+        <dc:Bounds x="782" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="790" y="142" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_01slupa_di" bpmnElement="Activity_0ionylq">
+        <dc:Bounds x="630" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

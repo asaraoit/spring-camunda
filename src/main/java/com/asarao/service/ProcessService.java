@@ -15,7 +15,7 @@ public interface ProcessService {
     /**
      * 抢占
      */
-    void preemption();
+    void preemption(String taskId,String userId);
 
     /**
      * 会签
@@ -25,7 +25,7 @@ public interface ProcessService {
     /**
      * 委托代办
      */
-    void concierge();
+    void concierge(String taskId,String userId);
 
     /**
      * 催办
@@ -50,7 +50,7 @@ public interface ProcessService {
     /**
      * 指派
      */
-    void assign();
+    void assign(String taskId,String userId);
 
     /**
      * 前加签
