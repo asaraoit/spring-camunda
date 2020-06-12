@@ -1,4 +1,4 @@
-package com.asarao.service.impl;
+package com.asarao.common.cmd;
 
 import org.camunda.bpm.dmn.engine.impl.el.JuelExpression;
 import org.camunda.bpm.engine.RuntimeService;

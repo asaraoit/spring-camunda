@@ -1,5 +1,6 @@
 package com.asarao;
 
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
@@ -7,8 +8,6 @@ import org.camunda.bpm.engine.repository.Deployment;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
-import org.camunda.bpm.model.bpmn.instance.FlowNode;
-import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  **/
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Slf4j
 public class WithDrawAndSkipTest {
 
     @Autowired
@@ -91,4 +91,5 @@ public class WithDrawAndSkipTest {
 //        managementService.executeCommand(new SetFLowNodeAndGoCmd(targetNode, executionEntityId));
 
     }
+
 }
