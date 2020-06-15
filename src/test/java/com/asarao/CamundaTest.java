@@ -33,11 +33,7 @@ public class CamundaTest {
                 .addClasspathResource("processes/payment.bpmn")
                 .name("payment")
                 .deploy();
-        System.out.println("流程部署ID: "+deployment.getId());
-        System.out.println("流程部署NAME: "+deployment.getName());
-        System.out.println("流程部署Source: "+deployment.getSource());
-        System.out.println("流程部署TenantId: "+deployment.getTenantId());
-        System.out.println("流程部署Time: "+deployment.getDeploymentTime());
+        System.out.println("部署成功");
     }
 
     @Autowired

@@ -62,17 +62,13 @@ public class ProcessService {
                     .singleResult();
 
             // 根据流程实列id查询待办任务中流程信息(act_ru_task)
-            List<Task> tasks = taskService.createTaskQuery()
-                    .processInstanceId(currentTask.getProcessInstanceId()).list();
-            if(null != tasks && !tasks.isEmpty()){
-                for (Task task:tasks) {
-                    // 取回流程节点 (当前任务id, 取回任务id)
-                    callBackProcess(task.getId(), currentTask.getId());
-                    // 删除历史流程走向记录
-                    historyService.deleteHistoricTaskInstance(task.getId());
+            Task task = taskService.createTaskQuery()
+                    .processInstanceId(currentTask.getProcessInstanceId()).singleResult();
+            // 取回流程节点 (当前任务id, 取回任务id)
+            callBackProcess(task.getId(), currentTask.getId());
+            // 删除历史流程走向记录
+            historyService.deleteHistoricTaskInstance(task.getId());
 
-                }
-            }
             // 删除历史流程走向记录
             historyService.deleteHistoricTaskInstance(currentTask.getId());
             log.info("流程取回成功");

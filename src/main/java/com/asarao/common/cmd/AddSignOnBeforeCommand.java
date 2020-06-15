@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.delegate.BaseDelegateExecution;
 import org.camunda.bpm.engine.impl.core.delegate.CoreActivityBehavior;
 import org.camunda.bpm.engine.impl.interceptor.Command;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
+import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.TaskEntity;
 import org.camunda.bpm.engine.impl.pvm.PvmActivity;
@@ -61,7 +62,6 @@ public class AddSignOnBeforeCommand implements Command<String> {
 
         // 当前任务的活动节点
         ActivityImpl currentActivity = processDefinition.findActivity(taskEntity.getTaskDefinitionKey());
-
 
 
         // 创建一个加签节点
