@@ -17,6 +17,7 @@ import org.camunda.bpm.engine.repository.Deployment;
 import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.engine.runtime.Execution;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.engine.runtime.ProcessInstanceModificationBuilder;
 import org.camunda.bpm.engine.task.Task;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +52,7 @@ public class WithdrawTest {
     @Test
     public void deploy() {
         repositoryService.createDeployment()
-                .addClasspathResource("processes/simple-withdraw.bpmn")
+                .addClasspathResource("processes/countersign.bpmn")
                 .name("测试取回")
                 .deploy();
         System.out.println("部署成功");
@@ -59,7 +60,7 @@ public class WithdrawTest {
 
     @Test
     public void startProcess() {
-        String instanceKey = "simple-withdraw";
+        String instanceKey = "countersign";
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(instanceKey);
         System.out.println("流程实例ID：" + processInstance.getId());
         System.out.println("流程实例业务Key：" + processInstance.getBusinessKey());
@@ -88,7 +89,7 @@ public class WithdrawTest {
 
     @Test
     public void completeTask() {
-        String taskId = "55712c51-aee7-11ea-8056-000ec6dd34b8";
+        String taskId = "d113ad96-af7a-11ea-b0a2-000ec6dd34b8";
         taskService.complete(taskId);
         System.out.println("任务：[" + taskId + "] 完成");
     }
@@ -285,4 +286,34 @@ public class WithdrawTest {
         System.out.println("撤回完成");
     }
 
+
+    @Test
+    public void modification(){
+
+        String taskId = "e730f717-af7d-11ea-9e4b-000ec6dd34b8";
+
+        // 历史任务
+        HistoricTaskInstance historicTaskInstance = historyService.createHistoricTaskInstanceQuery()
+                .taskId(taskId).singleResult();
+
+        // 流程实例ID
+        String processInstanceId = historicTaskInstance.getProcessInstanceId();
+
+        // 流程定义实体
+//        ProcessDefinitionEntity processDefinitionEntity =
+//                (ProcessDefinitionEntity) repositoryService
+//                        .getProcessDefinition(historicTaskInstance.getProcessDefinitionId());
+//
+//        ActivityImpl activity = processDefinitionEntity.findActivity(historicTaskInstance.getTaskDefinitionKey());
+//
+//        List<PvmTransition> outgoingTransitions = activity.getOutgoingTransitions();
+
+
+        runtimeService.createProcessInstanceModification(processInstanceId)
+                .cancelAllForActivity("Activity_0xrswpv")
+                .startBeforeActivity("Activity_0ionylq")
+                .execute();
+
+        System.out.println("成功");
+    }
 }

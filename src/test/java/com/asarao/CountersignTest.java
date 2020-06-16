@@ -31,7 +31,7 @@ public class CountersignTest {
     @Test
     public void deploy(){
         Deployment deployment = repositoryService.createDeployment()
-                .addClasspathResource("processes/countersign.bpmn")
+                .addClasspathResource("processes/modify-multi-instance.bpmn")
                 .name("会签测试")
                 .deploy();
         System.out.println("流程部署ID: "+deployment.getId());
@@ -59,12 +59,28 @@ public class CountersignTest {
         System.out.println("流程实例is Suspended："+processInstance.isSuspended());
     }
 
+    @Test
+    public void startProcess2(){
+        String instanceKey = "modify-multi-instance";
+        String[] assigneeList = {"办理人A","办理人B","办理人C"};
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("assigneeList", Arrays.asList(assigneeList));
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(instanceKey, variables);
+        System.out.println("流程实例ID："+processInstance.getId());
+        System.out.println("流程实例业务Key："+processInstance.getBusinessKey());
+        System.out.println("流程实例CaseInstanceId："+processInstance.getCaseInstanceId());
+        System.out.println("流程定义ID："+processInstance.getProcessDefinitionId());
+        System.out.println("流程实例ID："+processInstance.getProcessInstanceId());
+        System.out.println("流程实例TenantID："+processInstance.getTenantId());
+        System.out.println("流程实例is Suspended："+processInstance.isSuspended());
+    }
+
     @Autowired
     TaskService taskService;
 
     @Test
     public void completeTask(){
-        String taskId = "ab99e504-aac5-11ea-a050-000ec6dd34b8";
+        String taskId = "e730f717-af7d-11ea-9e4b-000ec6dd34b8";
         String[] assigneeList = {"办理人A","办理人B","办理人C","办理人D"};
         Map<String, Object> variables = new HashMap<>(0);
         variables.put("assigneeList", Arrays.asList(assigneeList));
@@ -109,5 +125,17 @@ public class CountersignTest {
         String taskId = "dc6161ec-aac5-11ea-ace5-000ec6dd34b8";
         taskService.complete(taskId);
         System.out.println("完成任务");
+    }
+
+    @Test
+    public void addInstance(){
+        String processInstanceId = "d0a284f3-af8e-11ea-88c4-000ec6dd34b8";
+
+        runtimeService.createProcessInstanceModification(processInstanceId)
+                .startBeforeActivity("Activity_1jo1sok")
+                .setVariable("assignee","新加签的人")
+                .execute();
+
+        System.out.println("会签加签成功");
     }
 }
