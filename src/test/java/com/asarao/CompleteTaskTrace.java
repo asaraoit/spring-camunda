@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.repository.Deployment;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.engine.task.Task;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,17 @@ public class CompleteTaskTrace {
         String taskId = "751605fd-ab8c-11ea-a505-000ec6dd34b8";
         taskService.complete(taskId);
         System.out.println("任务完成");
+    }
+
+    @Test
+    public void cc(){
+        String taskId = "3b269107-b08a-11ea-ac05-000ec6dd34b8";
+        Task task = taskService.newTask();
+
+        task.setAssignee("抄送人");
+        task.setName("抄送任务");
+        task.setParentTaskId(taskId);
+
+        taskService.saveTask(task);
     }
 }

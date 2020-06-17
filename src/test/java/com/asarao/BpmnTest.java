@@ -1,14 +1,25 @@
 package com.asarao;
 
 import cn.hutool.core.util.RandomUtil;
-import lombok.val;
+import org.camunda.bpm.application.ProcessApplicationInterface;
+import org.camunda.bpm.application.ProcessApplicationReference;
+import org.camunda.bpm.application.ProcessApplicationUnavailableException;
+import org.camunda.bpm.application.impl.ProcessApplicationReferenceImpl;
+import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.migration.MigrationPlan;
+import org.camunda.bpm.engine.repository.Deployment;
+import org.camunda.bpm.engine.repository.DeploymentBuilder;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.impl.BpmnModelConstants;
 import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.bpmn.instance.*;
 import org.camunda.bpm.model.bpmn.instance.bpmndi.BpmnDiagram;
+import org.camunda.bpm.model.bpmn.instance.bpmndi.BpmnPlane;
+import org.camunda.bpm.model.xml.ModelBuilder;
+import org.camunda.bpm.model.xml.type.ModelElementType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +27,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Collection;
+import java.util.Iterator;
+
+import static org.camunda.bpm.model.bpmn.impl.BpmnModelConstants.BPMN20_NS;
+import static org.camunda.bpm.model.bpmn.impl.BpmnModelConstants.CAMUNDA_NS;
+
 
 /*
  * @ClassName: BpmnTest
@@ -29,6 +46,12 @@ import java.util.Collection;
 @SpringBootTest
 public class BpmnTest {
 
+    @Autowired
+    RepositoryService repositoryService;
+
+    @Autowired
+    RuntimeService runtimeService;
+
     @Test
     public void read() {
 
@@ -36,56 +59,60 @@ public class BpmnTest {
 
         BpmnModelInstance modelInstance = Bpmn.readModelFromFile(file);
 
-        Definitions definitions = modelInstance.getDefinitions();
+
+        BpmnModelInstance clone = modelInstance.clone();
+
+        Definitions definitions = clone.getDefinitions();
+
+        // 清除图形
+        Collection<BpmnDiagram> bpmnDiagrams = definitions.getChildElementsByType(BpmnDiagram.class);
+        for (BpmnDiagram bpmnDiagram : bpmnDiagrams) {
+            definitions.removeChildElement(bpmnDiagram);
+        }
+
+        // 当前任务节点 用户任务节点，非用户任务节点不加签
+        String activityId = "Activity_0mqumop";
+
+
+        // 任务节点元素
+        UserTask userTask = clone.getModelElementById(activityId);
+
+        // 父元素 Process
+        Process process = (Process) userTask.getParentElement();
+        String newProcessId = process.getId() + "_" + RandomUtil.randomString(7);
+        process.setId(newProcessId);
+        System.out.println(process.getElementType().getTypeName());
+
+        // 创建一个新的任务节点
+        String id = "Activity_" + RandomUtil.randomString(7);
+        UserTask newTask = createElement(process, id, UserTask.class);
+        newTask.setCamundaAssignee("${assignee}");
+
+        // 当前任务的输入序列(当前任务只有一个流入项)
+        Collection<SequenceFlow> incoming = userTask.getIncoming();
+        Iterator<SequenceFlow> iterator = incoming.iterator();
+        SequenceFlow sequenceFlow = iterator.next();
+        System.out.println(" 当前任务输入序列流ID" +sequenceFlow.getId());
+
+
+        definitions.removeChildElement(sequenceFlow);
+
+        // 源节点
+        FlowNode source = sequenceFlow.getSource();
+        createSequenceFlow(process,source,newTask);
+
+        // 创建新线
+        createSequenceFlow(process,newTask,userTask);
+
+        System.out.println(Bpmn.convertToString(clone));
 
 
 
-//        // 当前任务节点 用户任务节点，非用户任务节点不加签
-//        String activityId = "Activity_0mqumop";
-//
-//        BpmnModelInstance newModel = modelInstance.clone();
-//        Definitions definitions = newModel.getDefinitions();
-//
-//
-//        // 任务节点元素
-//        UserTask userTask = newModel.getModelElementById(activityId);
-//
-//        // 父元素 Process
-//        Process process = (Process) userTask.getParentElement();
-//        String newProcessId = process.getId() + "_" + RandomUtil.randomString(7);
-//        process.setId(newProcessId);
-//        System.out.println(process.getElementType().getTypeName());
-//
-//        // 创建一个新的任务节点
-//        String id = "Activity_" + RandomUtil.randomString(7);
-//        UserTask newTask = createElement(process, id, UserTask.class);
-//        newTask.setCamundaAssignee("${assignee}");
-//
-//        // 当前任务的输入序列(当前任务只有一个流入项)
-//        Collection<SequenceFlow> incoming = userTask.getIncoming();
-//        Iterator<SequenceFlow> iterator = incoming.iterator();
-//        SequenceFlow sequenceFlow = iterator.next();
-//        System.out.println(" 当前任务输入序列流ID" +sequenceFlow.getId());
-//
-//
-//        definitions.removeChildElement(sequenceFlow);
-//
-//        // 源节点
-//        FlowNode source = sequenceFlow.getSource();
-//        createSequenceFlow(process,source,newTask);
-//
-//        // 创建新线
-//        createSequenceFlow(process,newTask,userTask);
-//
-//        // 清除图形
-//        definitions.removeAttribute("BPMNDiagram");
-//
-//        // validate and write model to file
-//        Bpmn.validateModel(newModel);
-//        String path = this.getClass().getResource("/").getPath();
-//        System.out.println(path);
-//        File newFile = new File(path + process.getId() + ".bpmn");
-//        Bpmn.writeModelToFile(newFile, newModel);
+//        Deployment deploy = repositoryService.createDeployment()
+//                .addModelInstance(process.getId(), clone)
+//                .name("加签部署")
+//                .deploy();
+
 
     }
 
@@ -120,9 +147,6 @@ public class BpmnTest {
         System.out.println(Bpmn.convertToString(myProcess));
     }
 
-    @Autowired
-    RuntimeService runtimeService;
-
     @Test
     public void migration(){
         MigrationPlan migrationPlan = runtimeService
@@ -132,6 +156,56 @@ public class BpmnTest {
                 .mapActivities("archiveApplication", "archiveApplication")
                 .mapEqualActivities()
                 .build();
+
+    }
+
+    @Test
+    public void create(){
+        /**
+         * <bpmn:definitions
+         *  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+         *  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+         *  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+         *  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+         *  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+         *  id="Definitions_1v13f4o"
+         *  targetNamespace="http://bpmn.io/schema/bpmn"
+         *  exporter="Camunda Modeler"
+         *  exporterVersion="4.0.0">
+         */
+
+        BpmnModelInstance modelInstance = Bpmn.createEmptyModel();
+
+
+        Definitions definitions = modelInstance.newInstance(Definitions.class);
+
+        definitions.getDomElement().registerNamespace("bpmn", "http://www.omg.org/spec/BPMN/20100524/MODEL");
+        definitions.getDomElement().registerNamespace("bpmndi","http://www.omg.org/spec/BPMN/20100524/DI");
+        definitions.getDomElement().registerNamespace("dc","http://www.omg.org/spec/DD/20100524/DC");
+        definitions.getDomElement().registerNamespace("camunda","http://camunda.org/schema/1.0/bpmn");
+        definitions.getDomElement().registerNamespace("di","http://www.omg.org/spec/DD/20100524/DI");
+
+        definitions.setTargetNamespace("http://bpmn.io/schema/bpmn");
+
+        definitions.setId("Definitions_1v13f4o");
+        definitions.setExporter("Camunda Modeler");
+        definitions.setExporterVersion("4.0.0");
+
+
+
+        modelInstance.setDefinitions(definitions);
+        Process process = modelInstance.newInstance(Process.class);
+        definitions.addChildElement(process);
+
+        BpmnDiagram bpmnDiagram = modelInstance.newInstance(BpmnDiagram.class);
+
+        BpmnPlane bpmnPlane = modelInstance.newInstance(BpmnPlane.class);
+        bpmnPlane.setBpmnElement(process);
+
+        bpmnDiagram.addChildElement(bpmnPlane);
+        definitions.addChildElement(bpmnDiagram);
+
+        System.out.println(Bpmn.convertToString(modelInstance));
 
     }
 }

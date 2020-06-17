@@ -34,6 +34,8 @@ public class CamundaTest {
                 .name("payment")
                 .deploy();
         System.out.println("部署成功");
+
+        repositoryService.createDeployment().addString("","");
     }
 
     @Autowired
