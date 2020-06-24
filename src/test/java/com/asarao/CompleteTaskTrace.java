@@ -1,5 +1,6 @@
 package com.asarao;
 
+import org.camunda.bpm.engine.ManagementService;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
@@ -64,7 +65,6 @@ public class CompleteTaskTrace {
         taskService.complete(taskId);
         System.out.println("任务完成");
     }
-
     @Test
     public void cc(){
         String taskId = "3b269107-b08a-11ea-ac05-000ec6dd34b8";
@@ -73,7 +73,6 @@ public class CompleteTaskTrace {
         task.setAssignee("抄送人");
         task.setName("抄送任务");
         task.setParentTaskId(taskId);
-
         taskService.saveTask(task);
     }
 }

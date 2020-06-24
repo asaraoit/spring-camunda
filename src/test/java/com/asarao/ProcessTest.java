@@ -1,18 +1,23 @@
 package com.asarao;
 
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.GatewayDirection;
+import org.camunda.bpm.model.bpmn.builder.*;
+import org.camunda.bpm.model.bpmn.builder.ProcessBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashMap;
@@ -137,5 +142,92 @@ public class ProcessTest {
                 .done();
 
         System.out.println(Bpmn.convertToString(modelInstance));
+    }
+
+    @Test
+    public void create2(){
+        String processDefinitionKey = "Process_" + RandomUtil.randomString(7);
+
+        ProcessBuilder executableProcess = Bpmn.createExecutableProcess(processDefinitionKey);
+
+        StartEventBuilder startEventBuilder = executableProcess.startEvent().name("开始");
+
+        // 1. 发起任务
+        UserTaskBuilder initial = startEventBuilder.userTask().name("提交申请").camundaAssignee("${assignee}");
+
+        // 2. 判断字节点（若为排他网关）
+        ExclusiveGatewayBuilder gatewayBuilder = initial
+                .exclusiveGateway()
+                .name("Selected Project")
+                // 分叉
+                .gatewayDirection(GatewayDirection.Diverging);
+        // 条件节点 第一个子元素
+        ExclusiveGatewayBuilder a = gatewayBuilder.condition("A", "${project=='A'}");
+        // 假设下一个任务为多人的顺序签（A，B，C）
+        UserTaskBuilder userTaskBuilder_A = a.userTask().name("A审批").camundaAssignee("A")
+                .userTask().name("B审批").camundaAssignee("B")
+                .userTask().name("C审批").camundaAssignee("C");
+        // a线财务审批
+        UserTaskBuilder userTaskBuilder_CA = userTaskBuilder_A.userTask().name("财务A审批").camundaAssignee("财务A");
+        EndEventBuilder end_a = userTaskBuilder_CA.endEvent().name("End_A");
+
+        // 判断是否还有子元素
+        // 无  end_a.done();
+
+
+        // b 线
+        AbstractGatewayBuilder abstractGatewayBuilder = end_a.moveToLastGateway();
+        AbstractFlowNodeBuilder b = abstractGatewayBuilder.condition("B", "${project=='B'}");
+        AbstractActivityBuilder counterSignBuilder = b.userTask().name("会签").camundaAssignee("${assignee}")
+                .multiInstance()
+                .parallel()
+                .camundaCollection("D,E,F")
+                .camundaElementVariable("assignee")
+                .completionCondition("${nrOfCompletedInstances==nrOfInstances}")
+                .multiInstanceDone();
+        UserTaskBuilder userTaskBuilder_CB = counterSignBuilder.userTask().name("财务B审批").camundaAssignee("财务B");
+        EndEventBuilder end_b = userTaskBuilder_CB.endEvent().name("End_B");
+
+        AbstractFlowNodeBuilder c = end_b.moveToLastGateway().condition("C", "${project=='C'}");
+        AbstractActivityBuilder cBuilder = c.userTask().name("会签").camundaAssignee("${assignee}")
+                .multiInstance()
+                .parallel()
+                .camundaCollection("G,H")
+                .camundaElementVariable("assignee")
+                .completionCondition("${nrOfCompletedInstances==1}")
+                .multiInstanceDone();
+
+        UserTaskBuilder userTaskBuilder_CC = cBuilder.userTask().name("财务C").camundaAssignee("财务C");
+        EndEventBuilder end_c = userTaskBuilder_CC.endEvent().name("End_C");
+        BpmnModelInstance done = end_c.done();
+
+
+        System.out.println(Bpmn.convertToString(done));
+
+        repositoryService.createDeployment()
+                .addModelInstance("draw.bpmn", done)
+                .deploy();
+    }
+
+    @Test
+    public void start(){
+        String key = "Process_0z8egm6";
+
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("assignee","张三");
+        runtimeService.startProcessInstanceByKey(key,variables);
+        System.out.println("启动成功");
+    }
+
+    @Autowired
+    TaskService taskService;
+
+    @Test
+    public void apply(){
+        String taskId = "36d4b588-b606-11ea-9668-000ec6dd34b8";
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("project","A");
+        taskService.complete(taskId,variables);
+        System.out.println("提交");
     }
 }
