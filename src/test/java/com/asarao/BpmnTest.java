@@ -6,10 +6,16 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.migration.MigrationPlan;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.builder.ProcessBuilder;
+import org.camunda.bpm.model.bpmn.builder.StartEventBuilder;
+import org.camunda.bpm.model.bpmn.builder.UserTaskBuilder;
+import org.camunda.bpm.model.bpmn.impl.instance.ExtensionElementsImpl;
 import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.bpmn.instance.*;
 import org.camunda.bpm.model.bpmn.instance.bpmndi.BpmnDiagram;
 import org.camunda.bpm.model.bpmn.instance.bpmndi.BpmnPlane;
+import org.camunda.bpm.model.dmn.instance.Input;
+import org.camunda.bpm.model.dmn.instance.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,14 +129,23 @@ public class BpmnTest {
 
     @Test
     public void fluent(){
-        final BpmnModelInstance myProcess = Bpmn.createExecutableProcess("process-payments")
-                .startEvent()
-                .serviceTask()
-                .name("Process Payment")
-                .endEvent()
-                .done();
+//        final BpmnModelInstance myProcess = Bpmn.createExecutableProcess("process-payments")
+//                .startEvent()
+//                    .userTask()
+//                    .name("Process Payment")
+//                .endEvent()
+//                .done();
 
-        System.out.println(Bpmn.convertToString(myProcess));
+        ProcessBuilder processBuilder = Bpmn.createExecutableProcess("process-test").name("1");
+
+        StartEventBuilder startEventBuilder = processBuilder.startEvent().name("start");
+
+        UserTaskBuilder userTaskBuilder = startEventBuilder.userTask().name("用户任务");
+
+        BpmnModelInstance modelInstance = userTaskBuilder.endEvent().name("End").done();
+
+
+        System.out.println(Bpmn.convertToString(modelInstance));
     }
 
     @Test
@@ -194,4 +209,29 @@ public class BpmnTest {
         System.out.println(Bpmn.convertToString(modelInstance));
 
     }
+
+    @Test
+    public void draw(){
+
+        BpmnModelInstance modelInstance = Bpmn.createEmptyModel();
+
+        Definitions definitions = modelInstance.newInstance(Definitions.class);
+
+        definitions.setTargetNamespace("http://camunda.org/examples");
+        modelInstance.setDefinitions(definitions);
+
+        // create the process
+        String processDefinitionKey = "process-test";
+        Process process = createElement(definitions, processDefinitionKey, Process.class);
+
+        StartEvent startEvent = createElement(process, "start", StartEvent.class);
+
+        UserTask userTask = createElement(process, "userTask-1", UserTask.class);
+        userTask.setName("");
+        userTask.setCamundaAssignee("${assignee}");
+        ExtensionElements extensionElements = modelInstance.newInstance(ExtensionElements.class);
+        Input input = extensionElements.addExtensionElement(Input.class);
+
+    }
+
 }
