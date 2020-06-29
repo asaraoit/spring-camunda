@@ -64,7 +64,7 @@ public class CamundaTest {
         Map<String,Object> vars = new HashMap<>(0);
         vars.put("assigneeList",new ArrayList<>(Arrays.asList("李四","王五")));
         vars.put("copyUsers",new ArrayList<>(Arrays.asList("1","2")));
-        vars.put("projectId","1");
+        vars.put("projectId","3");
         taskService.complete(task.getId(),vars);
         System.out.println("提交成功");
     }

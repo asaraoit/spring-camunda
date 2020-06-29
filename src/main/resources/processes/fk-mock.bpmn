@@ -14,7 +14,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{projectId==1}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0or3wby" name="项目B" sourceRef="Gateway_1wj7e9e" targetRef="Activity_177ws1d">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{project==2}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{projectId==2}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:userTask id="Activity_1v4s0ag" name="顺序签" camunda:assignee="#{assignee}">
       <bpmn:extensionElements>
