@@ -1,9 +1,14 @@
 package com.asarao;
 
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.impl.core.model.Properties;
 import org.camunda.bpm.engine.migration.MigrationPlan;
+import org.camunda.bpm.engine.repository.Deployment;
+import org.camunda.bpm.engine.repository.DeploymentBuilder;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.builder.ProcessBuilder;
@@ -111,13 +116,16 @@ public class BpmnTest {
 
     private <T extends BpmnModelElementInstance> T createElement(BpmnModelElementInstance parentElement, String id, Class<T> elementClass) {
         T element = parentElement.getModelInstance().newInstance(elementClass);
+        if(StrUtil.isEmpty(id)){
+            id = elementClass.getSimpleName() + IdUtil.simpleUUID();
+        }
         element.setAttributeValue("id", id, true);
         parentElement.addChildElement(element);
         return element;
     }
 
     private SequenceFlow createSequenceFlow(Process process, FlowNode from, FlowNode to) {
-        String identifier = "Flow_" + RandomUtil.randomString(7);
+        String identifier = "Flow_" + IdUtil.simpleUUID();
         SequenceFlow sequenceFlow = createElement(process, identifier, SequenceFlow.class);
         process.addChildElement(sequenceFlow);
         sequenceFlow.setSource(from);
@@ -223,14 +231,101 @@ public class BpmnTest {
         // create the process
         String processDefinitionKey = "process-test";
         Process process = createElement(definitions, processDefinitionKey, Process.class);
+        process.setExecutable(true);
 
-        StartEvent startEvent = createElement(process, "start", StartEvent.class);
+        // startEvent
+        StartEvent startEvent = createElement(process, null, StartEvent.class);
+        startEvent.setName("start");
 
-        UserTask userTask = createElement(process, "userTask-1", UserTask.class);
-        userTask.setName("");
-        userTask.setCamundaAssignee("${assignee}");
-        ExtensionElements extensionElements = modelInstance.newInstance(ExtensionElements.class);
-        Input input = extensionElements.addExtensionElement(Input.class);
+        // submitTask
+        UserTask submit = createElement(process, null, UserTask.class);
+        submit.setName("提交申请");
+        submit.setCamundaAssignee("#{assignee}");
+
+        // ExclusiveGateway
+        ExclusiveGateway exclusiveGateway = createElement(process, null, ExclusiveGateway.class);
+        exclusiveGateway.setName("fork");
+
+        createSequenceFlow(process,submit,exclusiveGateway);
+
+        // sequential UserTask
+        UserTask sequentialUserTask = createElement(process, null, UserTask.class);
+        sequentialUserTask.setName("sequential userTask");
+        MultiInstanceLoopCharacteristics sequential = createElement(sequentialUserTask, null, MultiInstanceLoopCharacteristics.class);
+        sequential.setSequential(true);
+        sequential.setCamundaCollection("assigneeList");
+        sequential.setCamundaElementVariable("assignee");
+        SequenceFlow flow_A = createSequenceFlow(process, exclusiveGateway, sequentialUserTask);
+        ConditionExpression c_A = modelInstance.newInstance(ConditionExpression.class);
+        c_A.setCamundaResource("#{project=='A'}");
+        flow_A.setConditionExpression(c_A);
+
+        // approveTask A
+        UserTask approve = createElement(process, null, UserTask.class);
+        approve.setName("财务审批");
+        approve.setCamundaAssignee("CA");
+        createSequenceFlow(process,sequentialUserTask,approve);
+
+        // EndEvent_A
+        EndEvent end_A = createElement(process, null, EndEvent.class);
+        end_A.setName("end_A");
+        createSequenceFlow(process,approve,end_A);
+
+        // parallel UserTask
+        UserTask parallelUserTask = createElement(process, null, UserTask.class);
+        parallelUserTask.setName("parallel UserTask");
+        parallelUserTask.setCamundaAssignee("#{assignee}");
+        MultiInstanceLoopCharacteristics parallel = createElement(parallelUserTask, null, MultiInstanceLoopCharacteristics.class);
+        parallel.setSequential(false);
+        parallel.setCamundaCollection("assigneeList");
+        parallel.setCamundaElementVariable("assignee");
+        SequenceFlow flow_B = createSequenceFlow(process, exclusiveGateway, parallelUserTask);
+        ConditionExpression c_B = modelInstance.newInstance(ConditionExpression.class);
+        c_B.setType("");
+        c_B.setTextContent("#{project=='B'}");
+        flow_A.setConditionExpression(c_B);
+
+
+
+        // approveTask B
+        UserTask approve_B = createElement(process, null, UserTask.class);
+        approve_B.setName("财务审批");
+        approve_B.setCamundaAssignee("CB");
+        createSequenceFlow(process,parallelUserTask,approve_B);
+
+        // EndEvent_B
+        EndEvent end_B = createElement(process, null, EndEvent.class);
+        end_B.setName("end_B");
+        createSequenceFlow(process,approve_B,end_B);
+
+
+        // or UserTask
+        UserTask orUserTask = createElement(process, null, UserTask.class);
+        orUserTask.setName("orUserTask");
+        orUserTask.setCamundaAssignee("#{assignee}");
+        MultiInstanceLoopCharacteristics or = createElement(orUserTask, null, MultiInstanceLoopCharacteristics.class);
+        or.setSequential(false);
+        or.setCamundaCollection("assigneeList");
+        or.setCamundaElementVariable("assignee");
+        CompletionCondition completionCondition = modelInstance.newInstance(CompletionCondition.class);
+        completionCondition.setTextContent("#{nrOfCompletedInstances==1}");
+        or.setCompletionCondition(completionCondition);
+        SequenceFlow flow_C = createSequenceFlow(process, exclusiveGateway, orUserTask);
+        exclusiveGateway.setDefault(flow_C);
+
+
+        // approveTask C
+        UserTask approve_C = createElement(process, null, UserTask.class);
+        approve_C.setName("财务审批");
+        approve_C.setCamundaAssignee("CC");
+        createSequenceFlow(process,orUserTask,approve_C);
+
+        // EndEvent_C
+        EndEvent end_C = createElement(process, null, EndEvent.class);
+        end_C.setName("end_B");
+        createSequenceFlow(process,approve_C,end_C);
+
+        System.out.println(Bpmn.convertToString(modelInstance));
 
     }
 

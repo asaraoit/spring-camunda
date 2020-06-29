@@ -62,6 +62,7 @@ public class CompleteTaskTrace {
     @Test
     public void complete(){
         String taskId = "751605fd-ab8c-11ea-a505-000ec6dd34b8";
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         taskService.complete(taskId);
         System.out.println("任务完成");
     }
