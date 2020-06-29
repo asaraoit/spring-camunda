@@ -5,6 +5,7 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.camunda.bpm.engine.impl.core.model.Properties;
 import org.camunda.bpm.engine.migration.MigrationPlan;
 import org.camunda.bpm.engine.repository.Deployment;
@@ -19,6 +20,9 @@ import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.bpmn.instance.*;
 import org.camunda.bpm.model.bpmn.instance.bpmndi.BpmnDiagram;
 import org.camunda.bpm.model.bpmn.instance.bpmndi.BpmnPlane;
+import org.camunda.bpm.model.bpmn.instance.camunda.CamundaProperties;
+import org.camunda.bpm.model.bpmn.instance.camunda.CamundaProperty;
+import org.camunda.bpm.model.bpmn.instance.camunda.CamundaTaskListener;
 import org.camunda.bpm.model.dmn.instance.Input;
 import org.camunda.bpm.model.dmn.instance.List;
 import org.junit.Test;
@@ -149,6 +153,23 @@ public class BpmnTest {
         StartEventBuilder startEventBuilder = processBuilder.startEvent().name("start");
 
         UserTaskBuilder userTaskBuilder = startEventBuilder.userTask().name("用户任务");
+
+
+        UserTask element = userTaskBuilder.getElement();
+        ExtensionElements extensionElements = element.getModelInstance().newInstance(ExtensionElements.class);
+        element.setExtensionElements(extensionElements);
+
+        // property
+        CamundaProperties camundaProperties = extensionElements.addExtensionElement(CamundaProperties.class);
+        CamundaProperty camundaProperty = camundaProperties.getModelInstance().newInstance(CamundaProperty.class);
+        camundaProperty.setCamundaName("copyUsers");
+        camundaProperty.setCamundaValue("A,B");
+        camundaProperties.addChildElement(camundaProperty);
+
+        // listener
+        CamundaTaskListener camundaTaskListener = extensionElements.addExtensionElement(CamundaTaskListener.class);
+        camundaTaskListener.setCamundaEvent("complete");
+        camundaTaskListener.setCamundaDelegateExpression("#{completeListener}");
 
         BpmnModelInstance modelInstance = userTaskBuilder.endEvent().name("End").done();
 
@@ -324,6 +345,7 @@ public class BpmnTest {
         EndEvent end_C = createElement(process, null, EndEvent.class);
         end_C.setName("end_B");
         createSequenceFlow(process,approve_C,end_C);
+
 
         System.out.println(Bpmn.convertToString(modelInstance));
 

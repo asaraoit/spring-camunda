@@ -1,14 +1,20 @@
 package com.asarao.listener;
 
 import lombok.extern.slf4j.Slf4j;
+import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.TaskService;
+import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;
+import org.camunda.bpm.engine.impl.persistence.entity.TaskEntity;
 import org.camunda.bpm.engine.task.Task;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.camunda.bpm.model.bpmn.instance.ExtensionElements;
+import org.camunda.bpm.model.bpmn.instance.UserTask;
+import org.camunda.bpm.model.bpmn.instance.camunda.CamundaProperties;
+import org.camunda.bpm.model.bpmn.instance.camunda.CamundaProperty;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Collection;
 
 /*
  * @ClassName: CompleteTaskListener
@@ -17,25 +23,44 @@ import java.util.List;
  * @Date: 2020/6/29 15:00
  * @Version: 1.0
  **/
-@Component
+@Component("completeListener")
 @Slf4j
 public class CompleteTaskListener implements TaskListener {
 
-    @Autowired
-    TaskService taskService;
-
     @Override
     public void notify(DelegateTask delegateTask) {
-        List copyUsers = (List) delegateTask.getVariable("copyUsers");
-        if(copyUsers!= null && !copyUsers.isEmpty()){
-            for (Object copyUser : copyUsers) {
-                String assigneeUser = (String) copyUser;
-                Task task = taskService.newTask();
-                task.setParentTaskId(delegateTask.getId());
-                task.setAssignee(assigneeUser);
-                taskService.saveTask(task);
-                log.info("[抄送给：{}]的任务创建成功",assigneeUser);
-            }
+
+        TaskService taskService = delegateTask.getProcessEngineServices().getTaskService();
+
+        UserTask userTask = delegateTask.getBpmnModelElementInstance();
+        ExtensionElements extensionElements = userTask.getExtensionElements();
+        CamundaProperties camundaProperties = extensionElements.getElementsQuery()
+                .filterByType(CamundaProperties.class).singleResult();
+        Collection<CamundaProperty> properties = camundaProperties.getCamundaProperties();
+        CamundaProperty camundaProperty = properties.iterator().next();
+        String notifyUsers = camundaProperty.getCamundaValue();
+        String[] users = notifyUsers.split(",");
+
+        DelegateExecution execution = delegateTask.getExecution();
+
+        DelegateExecution superExecution = execution.getSuperExecution();
+        if(superExecution != null){
+            System.out.println(superExecution.getProcessBusinessKey());
         }
+
+        for (String user : users) {
+            Task task = taskService.newTask();
+            task.setParentTaskId(delegateTask.getId());
+            task.setAssignee(users[0]);
+            task.setDescription("抄送任务");
+            TaskEntity taskEntity = (TaskEntity) task;
+            // 设置流程ID，查询的时候会用到
+            taskEntity.setProcessInstanceId(delegateTask.getProcessInstanceId());
+            taskService.saveTask(taskEntity);
+            log.info("抄送任务{} 给 [{}]",delegateTask.getId(),user);
+            taskService.complete(task.getId());
+            log.info("抄送任务完成");
+        }
+
     }
 }

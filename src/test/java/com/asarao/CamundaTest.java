@@ -50,28 +50,28 @@ public class CamundaTest {
     @Test
     public void startProcess(){
         String instanceKey = "fk-mock";
-        String businessKey = "1";
+        String businessKey = "2";
         Map<String,Object> variables = new HashMap<>();
         variables.put("assignee","张三");
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(instanceKey,businessKey, variables);
         System.out.println("启动成功");
 
         Task task = taskService.createTaskQuery().taskAssignee("张三")
-                .processInstanceBusinessKey("1")
+                .processInstanceBusinessKey("2")
                 .singleResult();
 
         taskService.createComment(task.getId(),processInstance.getId(),"提交");
         Map<String,Object> vars = new HashMap<>(0);
         vars.put("assigneeList",new ArrayList<>(Arrays.asList("李四","王五")));
         vars.put("copyUsers",new ArrayList<>(Arrays.asList("1","2")));
-        vars.put("projectId","3");
+        vars.put("projectId","1");
         taskService.complete(task.getId(),vars);
         System.out.println("提交成功");
     }
 
     @Test
     public void complete(){
-        String taskId = "9eae5c4f-b9d9-11ea-baee-181deaf1ddd1";
+        String taskId = "d7b62d37-ba03-11ea-bec6-181deaf1ddd1";
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         taskService.createComment(taskId, task.getProcessInstanceId(), "同意");
         taskService.complete(taskId);

@@ -2,6 +2,8 @@ package com.asarao.listener;
 
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;
+import org.camunda.bpm.model.bpmn.instance.ExtensionElements;
+import org.camunda.bpm.model.bpmn.instance.UserTask;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
