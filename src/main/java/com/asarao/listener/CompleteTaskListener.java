@@ -30,6 +30,7 @@ public class CompleteTaskListener implements TaskListener {
     @Override
     public void notify(DelegateTask delegateTask) {
 
+
         TaskService taskService = delegateTask.getProcessEngineServices().getTaskService();
 
         UserTask userTask = delegateTask.getBpmnModelElementInstance();
