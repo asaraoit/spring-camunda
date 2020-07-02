@@ -50,14 +50,14 @@ public class ListenerTest {
     public void startProcess(){
         String instanceKey = "listener";
         Map<String,Object> variables = new HashMap<>();
-        variables.put("assigneeList",new ArrayList<>(Arrays.asList("李四","王五")));
+        variables.put("assignee","提交人");
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(instanceKey,variables);
         System.out.println("启动成功");
     }
 
     @Test
     public void complete(){
-        String taskId = "2e12cafe-bb76-11ea-9943-181deaf1ddd1";
+        String taskId = "d9797aea-bb7b-11ea-a85a-181deaf1ddd1";
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         taskService.createComment(taskId, task.getProcessInstanceId(), "同意");
         taskService.complete(taskId);

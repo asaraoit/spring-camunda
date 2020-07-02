@@ -18,7 +18,8 @@ public class AssigneeService implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public List<String> getAssigneeList(){
-        return Arrays.asList("A","B");
+    public List<String> getAssigneeList(String... assignee){
+        System.out.println(assignee.length);
+        return Arrays.asList(assignee);
     }
 }

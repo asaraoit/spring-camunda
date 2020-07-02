@@ -56,7 +56,7 @@ public class NotifyListener implements TaskListener {
         for (String user : users) {
             Task task = taskService.newTask();
             task.setParentTaskId(delegateTask.getId());
-            task.setAssignee(users[0]);
+            task.setAssignee(user);
             task.setDescription("抄送任务");
             TaskEntity taskEntity = (TaskEntity) task;
             // 设置流程ID，查询的时候会用到

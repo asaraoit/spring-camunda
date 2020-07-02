@@ -64,10 +64,8 @@ public class MultiInstanceTest {
 
     @Test
     public void completeTask(){
-        String taskId = "e10fc705-b924-11ea-8b48-000ec6dd34b8";
-        String[] assigneeList = {"A","B"};
-        Map<String,Object> variables = new HashMap<>(0);
-        variables.put("assigneeList", Arrays.asList(assigneeList));
-        taskService.complete(taskId,variables);
+        String taskId = "e5b8616d-bb82-11ea-9b8a-181deaf1ddd1";
+        taskService.complete(taskId);
+        System.out.println("任务完成");
     }
 }

@@ -77,4 +77,20 @@ public class CamundaTest {
         taskService.complete(taskId);
         System.out.println("完成任务");
     }
+    /**
+     * {
+     * 	"procDefId":"39e1d113-bc2a-11ea-aa67-181deaf1ddd1",
+     * 	"formValues":"{'project':1,'date':'2020-06-30'}",
+     * 	"invoices":[
+     *                        {
+     * 				"invoiceId":1,
+     * 				"expenseAmount":200.00
+     *            },
+     *            {
+     * 				"invoiceId":2,
+     * 				"expenseAmount":345.00
+     *            }
+     * 		]
+     * }
+     */
 }
