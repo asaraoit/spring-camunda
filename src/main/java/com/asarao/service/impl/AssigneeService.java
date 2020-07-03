@@ -22,4 +22,9 @@ public class AssigneeService implements Serializable {
         System.out.println(assignee.length);
         return Arrays.asList(assignee);
     }
+
+    public String getAssignee(String assignee){
+        System.out.println(assignee);
+        return assignee;
+    }
 }
