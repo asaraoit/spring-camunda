@@ -11,29 +11,35 @@
     <bpmn:userTask id="Activity_1tc0p55" name="顺序签" camunda:assignee="${assignee}">
       <bpmn:incoming>Flow_1u34ojn</bpmn:incoming>
       <bpmn:outgoing>Flow_1ur5xy4</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="${assigneeService.getAssigneeList(&#39;A&#39;,&#39;B&#39;)}" camunda:elementVariable="assignee" />
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="${assigneeService.getAssigneeList(2,3)}" camunda:elementVariable="assignee" />
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0dz5tca" sourceRef="StartEvent_1" targetRef="Activity_0ez0zlb" />
     <bpmn:sequenceFlow id="Flow_1u34ojn" sourceRef="Activity_0ez0zlb" targetRef="Activity_1tc0p55" />
-    <bpmn:userTask id="Activity_0ez0zlb" name="个人任务" camunda:assignee="#{assigneeService.getAssignee(&#39;C&#39;)}">
+    <bpmn:userTask id="Activity_0ez0zlb" name="个人任务" camunda:assignee="#{assigneeService.getAssignee(1)}">
       <bpmn:incoming>Flow_0dz5tca</bpmn:incoming>
       <bpmn:outgoing>Flow_1u34ojn</bpmn:outgoing>
     </bpmn:userTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="sequential-multi-instance">
-      <bpmndi:BPMNEdge id="Flow_1ur5xy4_di" bpmnElement="Flow_1ur5xy4">
-        <di:waypoint x="540" y="117" />
-        <di:waypoint x="632" y="117" />
+      <bpmndi:BPMNEdge id="Flow_1u34ojn_di" bpmnElement="Flow_1u34ojn">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="440" y="117" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0dz5tca_di" bpmnElement="Flow_0dz5tca">
         <di:waypoint x="188" y="117" />
         <di:waypoint x="270" y="117" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1u34ojn_di" bpmnElement="Flow_1u34ojn">
-        <di:waypoint x="370" y="117" />
-        <di:waypoint x="440" y="117" />
+      <bpmndi:BPMNEdge id="Flow_1ur5xy4_di" bpmnElement="Flow_1ur5xy4">
+        <di:waypoint x="540" y="117" />
+        <di:waypoint x="632" y="117" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="142" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0wlp21c_di" bpmnElement="Event_0wlp21c">
         <dc:Bounds x="632" y="99" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -42,12 +48,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1aoumae_di" bpmnElement="Activity_1tc0p55">
         <dc:Bounds x="440" y="77" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="152" y="99" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="158" y="142" width="24" height="14" />
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0dmwyv9_di" bpmnElement="Activity_0ez0zlb">
         <dc:Bounds x="270" y="77" width="100" height="80" />

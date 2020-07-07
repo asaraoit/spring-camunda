@@ -61,7 +61,7 @@ public class RejectTest {
 
     @Test
     public void completeTask(){
-        String taskId = "f276f591-bd35-11ea-87c3-181deaf1ddd1";
+        String taskId = "fcde6bc8-bd36-11ea-8704-181deaf1ddd1";
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         Map<String,Object> variables = new HashMap<>(0);
         variables.put("approve","yes");
@@ -81,7 +81,7 @@ public class RejectTest {
 
     @Test
     public void reject(){
-        String taskId = "e8a65555-bd36-11ea-8d09-181deaf1ddd1";
+        String taskId = "c160b210-bf2b-11ea-a581-181deaf1ddd1";
         Task task = taskService.createTaskQuery().taskId(taskId).active().singleResult();
         // 获取上一级UserTask
         TaskServiceImpl taskServiceImpl = (TaskServiceImpl) taskService;
@@ -90,11 +90,11 @@ public class RejectTest {
         String previousActivity = executor.execute(new PreviousActivityCommand(taskId,historyService));
         System.out.println("上一任务节点ID：" + previousActivity);
         // 驳回
-        runtimeService.createProcessInstanceModification(task.getProcessInstanceId())
-                .cancelAllForActivity(task.getTaskDefinitionKey())
-                .startBeforeActivity(previousActivity)
-                .execute();
-        System.out.println("驳回成功");
+//        runtimeService.createProcessInstanceModification(task.getProcessInstanceId())
+//                .cancelAllForActivity(task.getTaskDefinitionKey())
+//                .startBeforeActivity(previousActivity)
+//                .execute();
+//        System.out.println("驳回成功");
     }
 
     @Autowired

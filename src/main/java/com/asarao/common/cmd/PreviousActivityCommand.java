@@ -42,10 +42,18 @@ public class PreviousActivityCommand implements Command<String> {
         if(currentTask == null){
             return null;
         }
-
+        String taskDefinitionKey = currentTask.getTaskDefinitionKey();
+        if("initiateTask".equals(taskDefinitionKey)){
+            return null;
+        }
         UserTask elementInstance = currentTask.getBpmnModelElementInstance();
-        SequenceFlow sequenceFlow = elementInstance.getOutgoing().iterator().next();
-        String nextUserTaskId = sequenceFlow.getTarget().getId();
+        Collection<SequenceFlow> outgoing = elementInstance.getOutgoing();
+//        SequenceFlow sequenceFlow = elementInstance.getOutgoing().iterator().next();
+        List<String> lasts = new ArrayList<>();
+        getLastUserTask(lasts, outgoing);
+        System.out.println(lasts);
+
+//        String nextUserTaskId = sequenceFlow.getTarget().getId();
 
         List<HistoricActivityInstance> userTask = historyService.createHistoricActivityInstanceQuery()
                 .processInstanceId(currentTask.getProcessInstanceId())
@@ -58,13 +66,33 @@ public class PreviousActivityCommand implements Command<String> {
         for (int i = 0; i < userTask.size(); i++) {
             String activityId = userTask.get(i).getActivityId();
             log.info("节点：{}",activityId);
-            if(currentTask.getTaskDefinitionKey().equals(activityId)){
+            if(taskDefinitionKey.equals(activityId)){
                 String pre = userTask.get(i - 1).getActivityId();
-                if(!pre.equals(nextUserTaskId)){
-                    list.add(pre);
+                if(!lasts.contains(pre)){
+                   list.add(pre);
                 }
+//                if(!pre.equals(nextUserTaskId)){
+//                    list.add(pre);
+//                }
             }
         }
-        return list.get(list.size() -1);
+        if(!list.isEmpty()){
+            return list.get(list.size() -1);
+        }
+        return null;
+    }
+
+    private List<String> getLastUserTask(List<String> lasts,Collection<SequenceFlow> outgoing){
+        for (SequenceFlow sequenceFlow : outgoing) {
+            FlowNode target = sequenceFlow.getTarget();
+            String typeName = target.getElementType().getTypeName();
+            if("userTask".equalsIgnoreCase(typeName)){
+                lasts.add(target.getId());
+            }else {
+                Collection<SequenceFlow> targetOutgoing = target.getOutgoing();
+                return getLastUserTask(lasts,targetOutgoing);
+            }
+        }
+        return lasts;
     }
 }

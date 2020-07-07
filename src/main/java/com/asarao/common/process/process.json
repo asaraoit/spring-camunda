@@ -1,698 +1,162 @@
 {
+  "code": "200",
+  "msg": "success",
   "data": {
-    "response": {
-      "errcode": 0,
-      "errmsg": "ok"
+    "tableId": 1,
+    "workFlowVersionId": "",
+    "workFlowDef": {
+      "name": "流程审批",
+      "publicFlag": 1,
+      "sortNo": 5,
+      "duplicateRemovelFlag": 1,
+      "optionTip": "",
+      "optionNotNull": 0,
+      "status": 1
     },
-    "template_content": {
-      "controls": [
-        {
-          "property": {
-            "control": "Text",
-            "id": "Text-1592561896954",
-            "title": [
-              {
-                "text": "标题",
-                "lang": "zh_CN"
-              }
-            ],
-            "placeholder": [
-              {
-                "text": "请输入标题",
-                "lang": "zh_CN"
-              }
-            ],
-            "require": 1,
-            "un_print": 0
-          }
+    "directorMaxLevel": 4,
+    "flowPermission": [],
+    "nodeConfig": {
+      "pkId": "sid-start-node",
+      "nodeName": "发起人",
+      "type": 0,
+      "priorityLevel": "",
+      "settype": "",
+      "selectMode": "",
+      "selectRange": "",
+      "examineRoleId": "",
+      "directorLevel": "",
+      "replaceByUp": "",
+      "examineMode": "",
+      "noHanderAction": "",
+      "examineEndType": "",
+      "examineEndRoleId": "",
+      "examineEndDirectorLevel": "",
+      "ccSelfSelectFlag": "",
+      "conditionList": [],
+      "nodeUserList": [],
+      "childNode": {
+        "nodeName": "",
+        "type": 4,
+        "priorityLevel": 1,
+        "settype": 1,
+        "selectMode": 0,
+        "selectRange": 0,
+        "examineRoleId": 0,
+        "directorLevel": 1,
+        "replaceByUp": 0,
+        "examineMode": 1,
+        "noHanderAction": 2,
+        "examineEndType": 0,
+        "examineEndRoleId": 0,
+        "examineEndDirectorLevel": 1,
+        "ccSelfSelectFlag": 1,
+        "conditionList": [],
+        "nodeUserList": [],
+        "childNode": {
+          "nodeName": "抄送人",
+          "type": 2,
+          "ccSelfSelectFlag": 1,
+          "childNode": null,
+          "nodeUserList": [],
+          "error": false
         },
-        {
-          "property": {
-            "control": "Date",
-            "id": "Date-1592561934586",
-            "title": [
-              {
-                "text": "费用日期",
-                "lang": "zh_CN"
-              }
-            ],
-            "placeholder": [
-              {
-                "text": "请选择费用日期",
-                "lang": "zh_CN"
-              }
-            ],
-            "require": 1,
-            "un_print": 0
-          },
-          "config": {
-            "date": {
-              "type": "day"
-            }
-          }
-        },
-        {
-          "property": {
-            "control": "Date",
-            "id": "Date-1592562060657",
-            "title": [
-              {
-                "text": "开始时间",
-                "lang": "zh_CN"
-              }
-            ],
-            "placeholder": [
-              {
-                "text": "请选择开始时间",
-                "lang": "zh_CN"
-              }
-            ],
-            "require": 0,
-            "un_print": 0
-          },
-          "config": {
-            "date": {
-              "type": "day"
-            }
-          }
-        },
-        {
-          "property": {
-            "control": "Selector",
-            "id": "Selector-1592561956417",
-            "title": [
-              {
-                "text": "项目",
-                "lang": "zh_CN"
-              }
-            ],
-            "placeholder": [
-              {
-                "text": "请选择项目",
-                "lang": "zh_CN"
-              }
-            ],
-            "require": 1,
-            "un_print": 0
-          },
-          "config": {
-            "selector": {
-              "type": "multi",
-              "exp_type": 0,
-              "options": [
-                {
-                  "key": "option-1592561956418",
-                  "value": [
-                    {
-                      "text": "平台A",
-                      "lang": "zh_CN"
-                    }
-                  ]
-                },
-                {
-                  "key": "option-1592561956419",
-                  "value": [
-                    {
-                      "text": "平台B",
-                      "lang": "zh_CN"
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        },
-        {
-          "property": {
-            "control": "Money",
-            "id": "Money-1592562212450",
-            "title": [
-              {
-                "text": "金额",
-                "lang": "zh_CN"
-              }
-            ],
-            "placeholder": [
-              {
-                "text": "报销金额",
-                "lang": "zh_CN"
-              }
-            ],
-            "require": 0,
-            "un_print": 0
-          }
-        }
-      ]
-    },
-    "template_rule": {
-      "templaterange": {
-        "vids": [],
-        "partyids": [
-          "1688850171711268"
-        ],
-        "tagids": [],
-        "members": [],
-        "partys": [
-          {
-            "id": "1688850171711268",
-            "name": "北京合力中税科技发展有限公司",
-            "parent_id": 0,
-            "prev_id": 0,
-            "is_auth": true,
-            "openapi_partyid": "1",
-            "auth_flag": 131074,
-            "language_list": {
-              "info": []
+        "conditionNodes": [{
+          "nodeName": "条件1",
+          "type": 3,
+          "priorityLevel": 1,
+          "settype": 1,
+          "selectMode": 0,
+          "selectRange": 0,
+          "examineRoleId": 0,
+          "directorLevel": 1,
+          "replaceByUp": 0,
+          "examineMode": 1,
+          "noHanderAction": 2,
+          "examineEndType": 0,
+          "examineEndRoleId": 0,
+          "examineEndDirectorLevel": 1,
+          "ccSelfSelectFlag": 1,
+          "conditionList": [{
+            "columnId": 0,
+            "type": 1,
+            "conditionEn": "",
+            "conditionCn": "",
+            "optType": "",
+            "zdy1": "",
+            "zdy2": "",
+            "opt1": "",
+            "opt2": "",
+            "columnDbname": "",
+            "columnType": "",
+            "showType": "",
+            "showName": "",
+            "fixedDownBoxValue": ""
+          }],
+          "nodeUserList": [{
+            "targetId": 85,
+            "type": 1,
+            "name": "天旭"
+          }],
+          "childNode": {
+            "nodeName": "审核人",
+            "type": 1,
+            "priorityLevel": 1,
+            "settype": 1,
+            "selectMode": 0,
+            "selectRange": 0,
+            "examineRoleId": 0,
+            "directorLevel": 1,
+            "replaceByUp": 0,
+            "examineMode": 1,
+            "noHanderAction": 2,
+            "examineEndType": 0,
+            "examineEndRoleId": 0,
+            "examineEndDirectorLevel": 1,
+            "ccSelfSelectFlag": 1,
+            "conditionList": [],
+            "nodeUserList": [{
+              "targetId": 2515744,
+              "type": 1,
+              "name": "哈哈哈哈"
+            }],
+            "childNode": {
+              "nodeName": "抄送人",
+              "type": 2,
+              "ccSelfSelectFlag": 1,
+              "childNode": null,
+              "nodeUserList": [],
+              "error": false
             },
-            "departy_paths": [
-              {
-                "partyid": "1688850171711268",
-                "path_ids": [
-                  "1688850171711268"
-                ],
-                "path_names": [
-                  "北京合力中税科技发展有限公司"
-                ],
-                "language_list": [
-                  {
-                    "info": []
-                  }
-                ],
-                "path_str": "北京合力中税科技发展有限公司"
-              }
-            ],
-            "partyid": "1688850171711268"
-          }
-        ],
-        "tags": []
-      },
-      "approver_list": [],
-      "notify_list": [],
-      "general_option": {
-        "is_approver_change": 1,
-        "is_notify_change": 1,
-        "is_pass_cancel": 0,
-        "is_notify_type": 1,
-        "is_detail_permission": 0,
-        "is_signature": 0
-      },
-      "template_admin": {
-        "vids": [],
-        "add_vids": []
-      },
-      "process_node_list": [],
-      "invalid_approver_type": {
-        "vids": [],
-        "type": "Invalid_Approver_AutoAgree",
-        "members": []
-      },
-      "repeat_approver_type": "Repeat_Approver_Only_First"
-    },
-    "condconfig": {
-      "conds": [],
-      "multiconds": [],
-      "is_update_multicond": 0,
-      "is_update_controlid": 0,
-      "update_controlid_type": 0
-    },
-    "template_names": [
-      {
-        "text": "费用报销",
-        "lang": "zh_CN"
-      },
-      {
-        "text": "",
-        "lang": "en"
-      }
-    ],
-    "general_temp_id": "",
-    "icon_id": "03",
-    "icon_type": "finance",
-    "comm_smart_type_in_list": 0,
-    "status_edit": 0,
-    "groupid": 0,
-    "smart_type": 0,
-    "tp_creater_vid": "1688850171710027",
-    "tp_creater_member": {
-      "corp_id": "1970324950075346",
-      "vid": "1688850171710027",
-      "name": "张三全",
-      "mobile": "18710860327",
-      "email": "sanquan.zhang@chinab2bi.com",
-      "gender": 1,
-      "position": "",
-      "wechat": "",
-      "avatar": "http://wework.qpic.cn/bizmail/7yKLaknzJicia8WOYf80h0vQmNO8jVnFqdkgogQ736oxUjMial1YattHQ/0",
-      "account": "sanquan.zhang@chinab2bi.com",
-      "ext_tel": "",
-      "disable_stat": 0,
-      "identity_stat": 0,
-      "delete_stat": 0,
-      "manage_stat": 0,
-      "join_stat": 0,
-      "bind_stat": 1,
-      "english_name": "",
-      "login_stat": 1,
-      "alias": "sanquan.zhang@chinab2bi.com",
-      "active_biz": true,
-      "domainid": 0,
-      "mainparty_id": "1688850171711268",
-      "disable_biz": true,
-      "country_code": "86",
-      "wx_id_hash": "2bba452d3f5ed7823c1df6ddd9973357",
-      "depart_names": [],
-      "hide_mobile": false,
-      "disp_order": [],
-      "acctid": "ZhangSanQuan",
-      "attrs": [],
-      "is_quit": false,
-      "is_ww_bizmail_vip": false,
-      "is_ww_bizmail": false,
-      "acctid_stat": 0,
-      "pstn_extension_number": "",
-      "external_attrs": [],
-      "user_quit_time": 0,
-      "is_ready_join_again": false,
-      "is_realname": true,
-      "departy_paths": [
-        {
-          "partyid": "1688850171711268",
-          "path_ids": [
-            "1688850171711268"
-          ],
-          "path_names": [
-            "北京合力中税科技发展有限公司"
-          ],
-          "language_list": [
-            {
-              "info": []
-            }
-          ],
-          "path_str": "北京合力中税科技发展有限公司"
-        }
-      ],
-      "id": "1688850171710027",
-      "party_list": [
-        "1688850171711268"
-      ],
-      "parentid": "1688850171711268"
-    },
-    "curr_member": {
-      "corp_id": "1970324950075346",
-      "vid": "1688850171710027",
-      "name": "张三全",
-      "mobile": "18710860327",
-      "email": "sanquan.zhang@chinab2bi.com",
-      "gender": 1,
-      "position": "",
-      "wechat": "",
-      "avatar": "http://wework.qpic.cn/bizmail/7yKLaknzJicia8WOYf80h0vQmNO8jVnFqdkgogQ736oxUjMial1YattHQ/0",
-      "account": "sanquan.zhang@chinab2bi.com",
-      "ext_tel": "",
-      "disable_stat": 0,
-      "identity_stat": 0,
-      "delete_stat": 0,
-      "manage_stat": 0,
-      "join_stat": 0,
-      "bind_stat": 1,
-      "english_name": "",
-      "login_stat": 1,
-      "alias": "sanquan.zhang@chinab2bi.com",
-      "active_biz": true,
-      "domainid": 0,
-      "mainparty_id": "1688850171711268",
-      "disable_biz": true,
-      "country_code": "86",
-      "wx_id_hash": "2bba452d3f5ed7823c1df6ddd9973357",
-      "depart_names": [],
-      "hide_mobile": false,
-      "disp_order": [],
-      "acctid": "ZhangSanQuan",
-      "attrs": [],
-      "is_quit": false,
-      "is_ww_bizmail_vip": false,
-      "is_ww_bizmail": false,
-      "acctid_stat": 0,
-      "pstn_extension_number": "",
-      "external_attrs": [],
-      "user_quit_time": 0,
-      "is_ready_join_again": false,
-      "is_realname": true,
-      "departy_paths": [
-        {
-          "partyid": "1688850171711268",
-          "path_ids": [
-            "1688850171711268"
-          ],
-          "path_names": [
-            "北京合力中税科技发展有限公司"
-          ],
-          "language_list": [
-            {
-              "info": []
-            }
-          ],
-          "path_str": "北京合力中税科技发展有限公司"
-        }
-      ],
-      "id": "1688850171710027",
-      "party_list": [
-        "1688850171711268"
-      ],
-      "parentid": "1688850171711268"
-    },
-    "condDAG": {
-      "ret": 0,
-      "err_msg": "succ",
-      "cond": {
-        "lines": [
-          {
-            "id": "LINE-9c5a1-4b760",
-            "src_node_id": "START",
-            "dst_node_id": "ROUTER-5c1c9-23409",
-            "priority": "1",
-            "rule_rel": "RULE_AND",
-            "rules": [],
-            "name": []
+            "conditionNodes": [],
+            "error": false
           },
-          {
-            "id": "CONDITION-dbd05-dfc31",
-            "src_node_id": "ROUTER-5c1c9-23409",
-            "dst_node_id": "APPROVAL-a9460-e4ca2",
-            "priority": "1",
-            "rule_rel": "RULE_AND",
-            "rules": [
-              {
-                "type": 4,
-                "title": "项目",
-                "control_id": "Selector-1592561956417",
-                "singleselitems": [],
-                "numrangeitems": [],
-                "departrangeitems": [],
-                "multiselitems": [
-                  "平台A"
-                ],
-                "singleselitems_ids": [],
-                "multiselitems_ids": [
-                  "option-1592561956418"
-                ]
-              }
-            ],
-            "name": [
-              {
-                "text": "",
-                "lang": "en"
-              },
-              {
-                "text": "项目A",
-                "lang": "zh_CN"
-              }
-            ]
-          },
-          {
-            "id": "LINE-a6073-159af",
-            "src_node_id": "APPROVAL-a9460-e4ca2",
-            "dst_node_id": "CC-fdd22-abda9",
-            "priority": "1",
-            "rule_rel": "RULE_AND",
-            "rules": [],
-            "name": []
-          },
-          {
-            "id": "CONDITION-f6ab2-65653",
-            "src_node_id": "ROUTER-5c1c9-23409",
-            "dst_node_id": "default_node_2",
-            "priority": "2",
-            "rule_rel": "RULE_AND",
-            "rules": [],
-            "name": [
-              {
-                "text": "默认条件",
-                "lang": "zh_CN"
-              }
-            ]
-          },
-          {
-            "id": "LINE-7e2ae-40caf",
-            "src_node_id": "default_node_2",
-            "dst_node_id": "default_node_3",
-            "priority": "1",
-            "rule_rel": "RULE_AND",
-            "rules": [],
-            "name": []
-          },
-          {
-            "id": "LINE-15231-1b53c",
-            "src_node_id": "CC-fdd22-abda9",
-            "dst_node_id": "END",
-            "priority": "1",
-            "rule_rel": "RULE_AND",
-            "rules": [],
-            "name": []
-          },
-          {
-            "id": "LINE-ea6b4-10f53",
-            "src_node_id": "default_node_3",
-            "dst_node_id": "END",
-            "priority": "1",
-            "rule_rel": "RULE_AND",
-            "rules": [],
-            "name": []
-          }
-        ],
-        "nodes": [
-          {
-            "id": "START",
-            "type": "START",
-            "appro": {
-              "apv_rel": "APV_REL_AND"
-            },
-            "cc": {
-              "leaders": []
-            },
-            "name": [
-              {
-                "text": "申请人",
-                "lang": "zh_CN"
-              }
-            ]
-          },
-          {
-            "id": "ROUTER-5c1c9-23409",
-            "type": "ROUTER",
-            "appro": {
-              "type": "APV_SELF_SELECT",
-              "members": {
-                "vids": []
-              },
-              "leader": {
-                "order": "LOW_2_HIGH",
-                "level": 0,
-                "recursive_search_leader": true,
-                "skip_empty_leader": false,
-                "vids": []
-              },
-              "tag": {
-                "tag_ids": [],
-                "vids": []
-              },
-              "self": {
-                "vids": []
-              },
-              "self_select": {
-                "type": "SELF_SELECT_MULTI",
-                "range_type": "UN_LIMITED",
-                "vids": []
-              },
-              "apv_rel": "APV_REL_ONE_BY_ONE"
-            },
-            "cc": {
-              "leaders": []
-            },
-            "name": [
-              {
-                "text": "分支",
-                "lang": "zh_CN"
-              }
-            ]
-          },
-          {
-            "id": "APPROVAL-a9460-e4ca2",
-            "type": "APPROVAL",
-            "appro": {
-              "type": "APV_MEMBERS",
-              "members": {
-                "vids": [
-                  "1688850171710027"
-                ]
-              },
-              "leader": {
-                "order": "LOW_2_HIGH",
-                "level": 1,
-                "recursive_search_leader": true,
-                "skip_empty_leader": true,
-                "vids": []
-              },
-              "tag": {
-                "tag_ids": [],
-                "vids": []
-              },
-              "self": {
-                "vids": []
-              },
-              "self_select": {
-                "type": "SELF_SELECT_MULTI",
-                "range_type": "UN_LIMITED",
-                "vids": []
-              },
-              "apv_rel": "APV_REL_OR"
-            },
-            "cc": {
-              "leaders": []
-            },
-            "name": [
-              {
-                "text": "Approver",
-                "lang": "en"
-              },
-              {
-                "text": "审批人",
-                "lang": "zh_CN"
-              }
-            ]
-          },
-          {
-            "id": "CC-fdd22-abda9",
-            "type": "CC",
-            "appro": {
-              "apv_rel": "APV_REL_AND"
-            },
-            "cc": {
-              "members": {
-                "vids": []
-              },
-              "leaders": [],
-              "tag": {
-                "tag_ids": [],
-                "vids": []
-              },
-              "self": {
-                "is_allow": true,
-                "vids": []
-              },
-              "self_select": {
-                "type": "SELF_SELECT_MULTI",
-                "range": {
-                  "vids": [],
-                  "partyids": [],
-                  "tagids": []
-                },
-                "is_allow": false,
-                "range_type": "UN_LIMITED",
-                "vids": []
-              }
-            },
-            "name": [
-              {
-                "text": "recipients",
-                "lang": "en"
-              },
-              {
-                "text": "抄送人",
-                "lang": "zh_CN"
-              }
-            ]
-          },
-          {
-            "id": "default_node_2",
-            "type": "APPROVAL",
-            "appro": {
-              "type": "APV_SELF_SELECT",
-              "members": {
-                "vids": []
-              },
-              "leader": {
-                "order": "LOW_2_HIGH",
-                "level": 1,
-                "recursive_search_leader": true,
-                "skip_empty_leader": true,
-                "vids": []
-              },
-              "tag": {
-                "tag_ids": [],
-                "vids": []
-              },
-              "self": {
-                "vids": []
-              },
-              "self_select": {
-                "type": "SELF_SELECT_MULTI",
-                "range_type": "UN_LIMITED",
-                "vids": []
-              },
-              "apv_rel": "APV_REL_ONE_BY_ONE"
-            },
-            "cc": {
-              "leaders": []
-            },
-            "name": [
-              {
-                "text": "审批人",
-                "lang": "zh_CN"
-              }
-            ]
-          },
-          {
-            "id": "default_node_3",
-            "type": "CC",
-            "appro": {
-              "apv_rel": "APV_REL_AND"
-            },
-            "cc": {
-              "members": {
-                "vids": []
-              },
-              "leaders": [],
-              "tag": {
-                "tag_ids": [],
-                "vids": []
-              },
-              "self": {
-                "is_allow": false,
-                "vids": []
-              },
-              "self_select": {
-                "type": "SELF_SELECT_MULTI",
-                "is_allow": true,
-                "range_type": "UN_LIMITED",
-                "vids": []
-              }
-            },
-            "name": [
-              {
-                "text": "抄送人",
-                "lang": "zh_CN"
-              }
-            ]
-          },
-          {
-            "id": "END",
-            "type": "END",
-            "appro": {
-              "apv_rel": "APV_REL_AND"
-            },
-            "cc": {
-              "leaders": []
-            },
-            "name": [
-              {
-                "text": "流程结束",
-                "lang": "zh_CN"
-              }
-            ]
-          }
-        ]
+          "conditionNodes": [],
+          "error": false
+        }, {
+          "nodeName": "条件2",
+          "type": 3,
+          "priorityLevel": 2,
+          "settype": 1,
+          "selectMode": 0,
+          "selectRange": 0,
+          "examineRoleId": 0,
+          "directorLevel": 1,
+          "replaceByUp": 0,
+          "examineMode": 1,
+          "noHanderAction": 2,
+          "examineEndType": 0,
+          "examineEndRoleId": 0,
+          "examineEndDirectorLevel": 1,
+          "ccSelfSelectFlag": 1,
+          "conditionList": [],
+          "nodeUserList": [],
+          "childNode": null,
+          "conditionNodes": [],
+          "error": false
+        }]
       }
     }
   }
 }
+
+

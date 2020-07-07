@@ -3,7 +3,9 @@ package com.asarao.service.impl;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /*
@@ -18,13 +20,17 @@ public class AssigneeService implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public List<String> getAssigneeList(String... assignee){
+    public List<String> getAssigneeList(int... assignee){
         System.out.println(assignee.length);
-        return Arrays.asList(assignee);
+        List<String> assigneeList = new ArrayList<>();
+        for (int i : assignee) {
+            assigneeList.add(Integer.toString(i));
+        }
+        return assigneeList;
     }
 
-    public String getAssignee(String assignee){
+    public String getAssignee(int assignee){
         System.out.println(assignee);
-        return assignee;
+        return Integer.toString(assignee);
     }
 }

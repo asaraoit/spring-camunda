@@ -70,7 +70,7 @@ public class MultiInstanceTest {
 
     @Test
     public void completeTask(){
-        String taskId = "ed5cda62-bcfb-11ea-aa80-181deaf1ddd1";
+        String taskId = "f708ee64-c047-11ea-9ed7-181deaf1ddd1";
         taskService.complete(taskId);
         System.out.println("任务完成");
     }
