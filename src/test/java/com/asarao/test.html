@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+    <input id="submit" onclick="submit()" type="button" value="请求">
+</body>
+<script>
+    function submit() {
+        var url = "http://localhost:8080/task-deal/create";
+        var params = {
+            "userId":285,
+            "companyId":124,
+            "procDefId":"e7678805-c277-11ea-a04f-181deaf1ddd1",
+            "formValues":"{\"project\":\"dddd\",\"date\":\"2020-07-08\"}",
+            "invoices":[
+                {
+                    "invoiceId":129,
+                    "expenseAmount":100.35,
+                    "invoiceSource":0
+                },
+                {
+                    "invoiceId":1632,
+                    "expenseAmount":900.00,
+                    "invoiceSource":1
+                }
+            ]
+        };
+        // $.post(url,params,function (data) {
+        //     console.log(data);
+        // },"json");
+        $.ajax({
+            type: "post",
+            data: JSON.stringify(params),
+            url: url,
+            cache:false,
+            contentType:"application/json"
+            },
+            function (data) {
+            console.log(data);
+        },"json")
+    }
+</script>
+</html>
