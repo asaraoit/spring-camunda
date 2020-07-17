@@ -1,5 +1,6 @@
 package com.asarao;
 
+import com.asarao.common.OSSConstants;
 import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
@@ -22,6 +23,7 @@ import org.camunda.bpm.engine.task.Task;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -40,6 +42,9 @@ import java.util.Map;
 @SpringBootTest
 public class WithdrawTest {
 
+    @Value("${spring.application.name}")
+    private String config;
+
     @Autowired
     RepositoryService repositoryService;
 
@@ -51,11 +56,13 @@ public class WithdrawTest {
 
     @Test
     public void deploy() {
-        repositoryService.createDeployment()
-                .addClasspathResource("processes/countersign.bpmn")
-                .name("测试取回")
-                .deploy();
-        System.out.println("部署成功");
+//        repositoryService.createDeployment()
+//                .addClasspathResource("processes/countersign.bpmn")
+//                .name("测试取回")
+//                .deploy();
+//        System.out.println("部署成功");
+        System.out.println(config);
+        System.out.println(OSSConstants.END_POINT);
     }
 
     @Test

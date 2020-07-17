@@ -1,162 +1,110 @@
 {
-  "code": "200",
-  "msg": "success",
-  "data": {
-    "tableId": 1,
-    "workFlowVersionId": "",
-    "workFlowDef": {
-      "name": "流程审批",
-      "publicFlag": 1,
-      "sortNo": 5,
-      "duplicateRemovelFlag": 1,
-      "optionTip": "",
-      "optionNotNull": 0,
-      "status": 1
+  "data": [
+    {
+      "key": "32516dfac9914470b3fee367612e9b70",
+      "type": "input",
+      "name": "文本输入框",
+      "demo": false,
+      "fieldName": "input0",
+      "label": "input0",
+      "required": false,
+      "requiredMessage": ""
     },
-    "directorMaxLevel": 4,
-    "flowPermission": [],
-    "nodeConfig": {
-      "pkId": "sid-start-node",
-      "nodeName": "发起人",
-      "type": 0,
-      "priorityLevel": "",
-      "settype": "",
-      "selectMode": "",
-      "selectRange": "",
-      "examineRoleId": "",
-      "directorLevel": "",
-      "replaceByUp": "",
-      "examineMode": "",
-      "noHanderAction": "",
-      "examineEndType": "",
-      "examineEndRoleId": "",
-      "examineEndDirectorLevel": "",
-      "ccSelfSelectFlag": "",
-      "conditionList": [],
-      "nodeUserList": [],
-      "childNode": {
-        "nodeName": "",
-        "type": 4,
-        "priorityLevel": 1,
-        "settype": 1,
-        "selectMode": 0,
-        "selectRange": 0,
-        "examineRoleId": 0,
-        "directorLevel": 1,
-        "replaceByUp": 0,
-        "examineMode": 1,
-        "noHanderAction": 2,
-        "examineEndType": 0,
-        "examineEndRoleId": 0,
-        "examineEndDirectorLevel": 1,
-        "ccSelfSelectFlag": 1,
-        "conditionList": [],
-        "nodeUserList": [],
-        "childNode": {
-          "nodeName": "抄送人",
-          "type": 2,
-          "ccSelfSelectFlag": 1,
-          "childNode": null,
-          "nodeUserList": [],
-          "error": false
+    {
+      "key": "55bf69b070a347ac9e4774c54620f8b7",
+      "type": "radio",
+      "name": "单选框",
+      "fieldName": "radio4",
+      "label": "radio4",
+      "adding": true,
+      "required": false,
+      "requiredMessage": "",
+      "options": [
+        {
+          "label": "default1",
+          "value": "default1Value"
         },
-        "conditionNodes": [{
-          "nodeName": "条件1",
-          "type": 3,
-          "priorityLevel": 1,
-          "settype": 1,
-          "selectMode": 0,
-          "selectRange": 0,
-          "examineRoleId": 0,
-          "directorLevel": 1,
-          "replaceByUp": 0,
-          "examineMode": 1,
-          "noHanderAction": 2,
-          "examineEndType": 0,
-          "examineEndRoleId": 0,
-          "examineEndDirectorLevel": 1,
-          "ccSelfSelectFlag": 1,
-          "conditionList": [{
-            "columnId": 0,
-            "type": 1,
-            "conditionEn": "",
-            "conditionCn": "",
-            "optType": "",
-            "zdy1": "",
-            "zdy2": "",
-            "opt1": "",
-            "opt2": "",
-            "columnDbname": "",
-            "columnType": "",
-            "showType": "",
-            "showName": "",
-            "fixedDownBoxValue": ""
-          }],
-          "nodeUserList": [{
-            "targetId": 85,
-            "type": 1,
-            "name": "天旭"
-          }],
-          "childNode": {
-            "nodeName": "审核人",
-            "type": 1,
-            "priorityLevel": 1,
-            "settype": 1,
-            "selectMode": 0,
-            "selectRange": 0,
-            "examineRoleId": 0,
-            "directorLevel": 1,
-            "replaceByUp": 0,
-            "examineMode": 1,
-            "noHanderAction": 2,
-            "examineEndType": 0,
-            "examineEndRoleId": 0,
-            "examineEndDirectorLevel": 1,
-            "ccSelfSelectFlag": 1,
-            "conditionList": [],
-            "nodeUserList": [{
-              "targetId": 2515744,
-              "type": 1,
-              "name": "哈哈哈哈"
-            }],
-            "childNode": {
-              "nodeName": "抄送人",
-              "type": 2,
-              "ccSelfSelectFlag": 1,
-              "childNode": null,
-              "nodeUserList": [],
-              "error": false
-            },
-            "conditionNodes": [],
-            "error": false
-          },
-          "conditionNodes": [],
-          "error": false
-        }, {
-          "nodeName": "条件2",
-          "type": 3,
-          "priorityLevel": 2,
-          "settype": 1,
-          "selectMode": 0,
-          "selectRange": 0,
-          "examineRoleId": 0,
-          "directorLevel": 1,
-          "replaceByUp": 0,
-          "examineMode": 1,
-          "noHanderAction": 2,
-          "examineEndType": 0,
-          "examineEndRoleId": 0,
-          "examineEndDirectorLevel": 1,
-          "ccSelfSelectFlag": 1,
-          "conditionList": [],
-          "nodeUserList": [],
-          "childNode": null,
-          "conditionNodes": [],
-          "error": false
-        }]
-      }
+        {
+          "label": "default2",
+          "value": "default2Value"
+        }
+      ],
+      "optionRowShow": 3,
+      "demo": false
+    },
+    {
+      "key": "dadc5354c1f8441ea251b9677647fbb7",
+      "type": "select",
+      "name": "下拉框",
+      "demo": false,
+      "fieldName": "select0",
+      "label": "select0",
+      "required": true,
+      "requiredMessage": "",
+      "options": [
+        {
+          "label": "default1",
+          "value": "1"
+        },
+        {
+          "label": "default2",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "key": "ca009e50ee2a41038ccebd6d7eaf1334",
+      "type": "checkbox",
+      "name": "多选框",
+      "fieldName": "checkbox4",
+      "label": "checkbox4",
+      "adding": true,
+      "required": false,
+      "requiredMessage": "",
+      "options": [
+        {
+          "label": "c1",
+          "value": "1"
+        },
+        {
+          "label": "c2",
+          "value": "2"
+        },
+        {
+          "label": "c3",
+          "value": "3"
+        }
+      ],
+      "optionRowShow": 3,
+      "demo": false
+    },
+    {
+      "key": "2db006c6be1c46759d8a4519a2de2c7d",
+      "type": "date",
+      "name": "日期",
+      "fieldName": "date4",
+      "label": "date4",
+      "adding": true,
+      "required": false,
+      "requiredMessage": "",
+      "options": null,
+      "optionRowShow": 3,
+      "demo": false
+    },
+    {
+      "key": "c0d8b87e18fe476b833fba283375683b",
+      "type": "dateRange",
+      "name": "日期区间",
+      "fieldName": "dateRange4",
+      "label": "dateRange4",
+      "adding": true,
+      "required": false,
+      "requiredMessage": "",
+      "options": null,
+      "optionRowShow": 3,
+      "demo": false
     }
-  }
+  ],
+  "submitUrl": "1aaaaaaaaa",
+  "index": 1
 }
-
-
