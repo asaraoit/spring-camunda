@@ -22,11 +22,11 @@
       "options": [
         {
           "label": "default1",
-          "value": "default1Value"
+          "id": 1
         },
         {
           "label": "default2",
-          "value": "default2Value"
+          "id": 2
         }
       ],
       "optionRowShow": 3,
@@ -44,11 +44,11 @@
       "options": [
         {
           "label": "default1",
-          "value": "1"
+          "id": 1
         },
         {
           "label": "default2",
-          "value": "2"
+          "id": 2
         }
       ]
     },
@@ -64,15 +64,15 @@
       "options": [
         {
           "label": "c1",
-          "value": "1"
+          "id": 1
         },
         {
           "label": "c2",
-          "value": "2"
+          "id": 2
         },
         {
           "label": "c3",
-          "value": "3"
+          "id": 3
         }
       ],
       "optionRowShow": 3,
@@ -93,10 +93,23 @@
     },
     {
       "key": "c0d8b87e18fe476b833fba283375683b",
-      "type": "dateRange",
+      "type": "RangePicker",
       "name": "日期区间",
-      "fieldName": "dateRange4",
-      "label": "dateRange4",
+      "fieldName": "RangePicker4",
+      "label": "RangePicker4",
+      "adding": true,
+      "required": false,
+      "requiredMessage": "",
+      "options": null,
+      "optionRowShow": 3,
+      "demo": false
+    },
+    {
+      "key": "84db2c7f7d464039ac6243a8bc743297",
+      "type": "textarea",
+      "name": "日期区间",
+      "fieldName": "textarea4",
+      "label": "textarea4",
       "adding": true,
       "required": false,
       "requiredMessage": "",
