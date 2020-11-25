@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="definitions_fe9dbffe-6ca1-4bc6-9456-6937e70c99e2" targetNamespace="http://camunda.org/examples" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL">
+    <process id="Process_357a724c3bd348109eda159efca9af72" isExecutable="true">
+        <extensionElements>
+            <camunda:executionListener delegateExpression="#{processEndListener}" event="end"/>
+        </extensionElements>
+        <startEvent id="startEvent_yglqwyp" name="开始">
+            <outgoing>Flow_kp6l7en</outgoing>
+        </startEvent>
+        <userTask camunda:assignee="#{assignee}" id="initiateTask" name="发起">
+            <incoming>Flow_kp6l7en</incoming>
+            <outgoing>Flow_gx7v4tr</outgoing>
+        </userTask>
+        <sequenceFlow id="Flow_kp6l7en" sourceRef="startEvent_yglqwyp" targetRef="initiateTask"/>
+        <exclusiveGateway default="Flow_5aprafd" gatewayDirection="Diverging" id="exclusiveGateway_gwfq834">
+            <incoming>Flow_gx7v4tr</incoming>
+            <outgoing>Flow_r1d92pm</outgoing>
+            <outgoing>Flow_5aprafd</outgoing>
+        </exclusiveGateway>
+        <sequenceFlow id="Flow_gx7v4tr" sourceRef="initiateTask" targetRef="exclusiveGateway_gwfq834"/>
+        <exclusiveGateway gatewayDirection="Converging" id="exclusiveGateway_yp0s3tl">
+            <incoming>Flow_8mz898x</incoming>
+            <incoming>Flow_w2ie6x1</incoming>
+            <outgoing>Flow_76taayn</outgoing>
+        </exclusiveGateway>
+        <userTask camunda:assignee="102" id="userTask_mclze2o" name="个人任务">
+            <incoming>Flow_r1d92pm</incoming>
+            <outgoing>Flow_m43xj8x</outgoing>
+        </userTask>
+        <sequenceFlow id="Flow_r1d92pm" sourceRef="exclusiveGateway_gwfq834" targetRef="userTask_mclze2o">
+            <conditionExpression id="conditionExpression_a428d474-a789-4947-9f74-dc6367edb8d2">#{jpWmKBRWtF==53}</conditionExpression>
+        </sequenceFlow>
+        <userTask camunda:assignee="7" id="userTask_2mm9wms" name="个人任务">
+            <incoming>Flow_m43xj8x</incoming>
+            <outgoing>Flow_8mz898x</outgoing>
+        </userTask>
+        <sequenceFlow id="Flow_m43xj8x" sourceRef="userTask_mclze2o" targetRef="userTask_2mm9wms"/>
+        <userTask camunda:assignee="89" id="userTask_yvqwhr3" name="个人任务">
+            <incoming>Flow_5aprafd</incoming>
+            <outgoing>Flow_w2ie6x1</outgoing>
+        </userTask>
+        <sequenceFlow id="Flow_5aprafd" sourceRef="exclusiveGateway_gwfq834" targetRef="userTask_yvqwhr3"/>
+        <sequenceFlow id="Flow_8mz898x" sourceRef="userTask_2mm9wms" targetRef="exclusiveGateway_yp0s3tl"/>
+        <sequenceFlow id="Flow_w2ie6x1" sourceRef="userTask_yvqwhr3" targetRef="exclusiveGateway_yp0s3tl"/>
+        <endEvent id="endEvent_mufrdgo" name="end">
+            <incoming>Flow_76taayn</incoming>
+        </endEvent>
+        <sequenceFlow id="Flow_76taayn" sourceRef="exclusiveGateway_yp0s3tl" targetRef="endEvent_mufrdgo"/>
+    </process>
+</definitions>

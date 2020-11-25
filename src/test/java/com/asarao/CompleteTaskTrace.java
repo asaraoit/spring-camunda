@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /*
  * @ClassName: CompleteTaskTrace
  * @Description: TODO
@@ -30,7 +33,7 @@ public class CompleteTaskTrace {
     @Test
     public void deploy(){
         Deployment deployment = repositoryService.createDeployment()
-                .addClasspathResource("processes/completeTask.bpmn")
+                .addClasspathResource("processes/expression-test.bpmn")
                 .name("任务完成追踪")
                 .deploy();
         System.out.println("流程部署ID: "+deployment.getId());
@@ -45,7 +48,7 @@ public class CompleteTaskTrace {
 
     @Test
     public void startProcess(){
-        String instanceKey = "complete-task";
+        String instanceKey = "expression-test";
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(instanceKey);
         System.out.println("流程实例ID："+processInstance.getId());
         System.out.println("流程实例业务Key："+processInstance.getBusinessKey());
@@ -61,14 +64,16 @@ public class CompleteTaskTrace {
 
     @Test
     public void complete(){
-        String taskId = "751605fd-ab8c-11ea-a505-000ec6dd34b8";
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        taskService.complete(taskId);
+        String taskId = "59b21c11-d18d-11ea-9dad-0a002700000c";
+//        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        Map<String,Object> map = new HashMap<>();
+        map.put("x",10);
+        taskService.complete(taskId,map);
         System.out.println("任务完成");
     }
     @Test
     public void cc(){
-        String taskId = "3b269107-b08a-11ea-ac05-000ec6dd34b8";
+        String taskId = "aab48bf4-d0d2-11ea-b0ec-0a002700000c";
         Task task = taskService.newTask();
 
         task.setAssignee("抄送人");

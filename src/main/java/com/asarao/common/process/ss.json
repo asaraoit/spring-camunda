@@ -1,123 +1,157 @@
 {
-  "pkId": "sid-start-node",
   "nodeName": "发起人",
-  "type": 0,
-  "priorityLevel": "",
+  "pkId": "sid-start-node",
   "settype": "",
-  "conditionList": [],
+  "noHanderAction": "",
   "nodeUserList": [],
+  "examineMode": "",
+  "type": 0,
+  "directorLevel": "",
   "childNode": {
     "nodeName": "路由",
     "type": 4,
-    "priorityLevel": 1,
-    "settype": 1,
-    "conditionList": [],
-    "nodeUserList": [],
-    "childNode": {
-      "nodeName": "审核人",
-      "error": true,
-      "type": 1,
-      "settype": 0,
-      "childNode": null,
-      "nodeUserList": [{
-        "targetId": 21,
-        "type": 1,
-        "name": "财务"
-      }]
-    },
-    "conditionNodes": [{
-      "nodeName": "条件1",
-      "type": 3,
-      "settype": 1,
-      "conditionList": [{
-        "expression": "project==1"
-      }],
-      "nodeUserList": [],
-      "childNode": {
-        "nodeName": "审核人",
-        "type": 1,
-        "priorityLevel": 1,
-        "settype": 1,
-        "conditionList": [],
-        "nodeUserList": [{
-          "targetId": 73,
-          "type": 1,
-          "name": "业务员1"
-        }, {
-          "targetId": 74,
-          "type": 1,
-          "name": "业务员2"
-        }],
-        "childNode": {
-          "nodeName": "抄送人",
-          "type": 2,
-          "childNode": null,
-          "nodeUserList": [{
-            "targetId": 79,
-            "type": 1,
-            "name": "抄送对象"
-          }]
-        },
-        "conditionNodes": []
-      },
-      "conditionNodes": []
-    }, {
-      "nodeName": "条件2",
-      "type": 3,
-      "settype": 1,
-      "priorityLevel": 2,
-      "conditionList": [{
-        "expression": "project==2"
-      }],
-      "nodeUserList": [],
-      "childNode": {
-        "nodeName": "抄送人",
-        "type": 2,
-        "ccSelfSelectFlag": 1,
+    "childNode": null,
+    "conditionNodes": [
+      {
+        "nodeName": "条件1",
+        "branchId": "NEUmxDFVsh",
+        "nodeUserList": [],
+        "error": true,
+        "type": 3,
+        "selectd": [
+          107,
+          106
+        ],
         "childNode": {
           "nodeName": "审核人",
+          "branchId": "NEUmxDFVsh",
+          "settype": 0,
+          "noHanderAction": 1,
+          "nodeUserList": [
+            {
+              "targetId": 107,
+              "name": "leo@qq.com"
+            }
+          ],
+          "examineMode": 1,
+          "error": true,
           "type": 1,
-          "settype": 2,
-          "childNode": null,
-          "nodeUserList": [{
-            "targetId": 74,
+          "directorLevel": 1,
+          "childNode": {
+            "nodeName": "审核人",
+            "branchId": "NEUmxDFVsh",
+            "settype": 0,
+            "noHanderAction": 1,
+            "nodeUserList": [
+              {
+                "targetId": 106,
+                "name": "liu"
+              }
+            ],
+            "examineMode": 1,
+            "error": true,
             "type": 1,
-            "name": "业务员2"
-          }, {
-            "targetId": 75,
-            "type": 1,
-            "name": "业务员3"
-          }]
+            "directorLevel": 1,
+            "childNode": null,
+            "selectMode": 0,
+            "selectRange": 0,
+            "replaceByUp": 0,
+            "examineEndDirectorLevel": 0,
+            "formProcess": [
+              {
+                "process": 1,
+                "field_key": "bxje"
+              },
+              {
+                "process": 1,
+                "field_key": "wsA_bYoaHD"
+              },
+              {
+                "process": 1,
+                "field_key": "ePbnHTAJtY"
+              },
+              {
+                "process": 1,
+                "field_key": "department_id"
+              },
+              {
+                "process": 3,
+                "field_key": "project_id"
+              }
+            ],
+            "TASK_DEF_KEY": "userTask_hf59778"
+          },
+          "selectMode": 0,
+          "selectRange": 0,
+          "replaceByUp": 0,
+          "examineEndDirectorLevel": 0,
+          "formProcess": [
+            {
+              "process": 1,
+              "field_key": "bxje"
+            },
+            {
+              "process": 1,
+              "field_key": "wsA_bYoaHD"
+            },
+            {
+              "process": 1,
+              "field_key": "ePbnHTAJtY"
+            },
+            {
+              "process": 1,
+              "field_key": "department_id"
+            },
+            {
+              "process": 3,
+              "field_key": "project_id"
+            }
+          ],
+          "TASK_DEF_KEY": "userTask_0n8ahib"
         },
-        "nodeUserList": [{
-          "targetId": 79,
-          "type": 1,
-          "name": "抄送对象"
-        }]
-      }
-    }, {
-      "nodeName": "默认条件",
-      "type": 3,
-      "priorityLevel": 2,
-      "settype": 0,
-      "conditionList": [],
-      "nodeUserList": [],
-      "childNode": {
-        "nodeName": "审核人",
-        "type": 1,
-        "settype": 3,
-        "childNode": null,
-        "nodeUserList": [{
-          "targetId": 73,
-          "type": 1,
-          "name": "业务员1"
-        }, {
-          "targetId": 74,
-          "type": 1,
-          "name": "业务员2"
-        }]
+        "conditionList": [
+          {
+            "expression": "project_id==9",
+            "conditionLable": "测试项目",
+            "reg": "",
+            "conditionValue": "9",
+            "conditionType": "所在项目"
+          }
+        ],
+        "priorityLevel": "uMEMgnoaTI",
+        "conditionType": "1"
       },
-      "conditionNodes": []
-    }]
-  }
+      {
+        "nodeName": "默认条件",
+        "branchId": "AdhiiVca_c",
+        "nodeUserList": [],
+        "type": 3,
+        "selectd": [],
+        "childNode": null,
+        "conditionList": [
+          {}
+        ],
+        "priorityLevel": "_gHEAxxXzc",
+        "conditionType": "0"
+      }
+    ]
+  },
+  "examineEndType": "",
+  "ccSelfSelectFlag": "",
+  "conditionList": [],
+  "priorityLevel": "",
+  "conditionKey": "project_id",
+  "selectMode": "",
+  "selectRange": "",
+  "examineEndRoleId": "",
+  "examineRoleId": "",
+  "replaceByUp": "",
+  "examineEndDirectorLevel": "",
+  "formProcess": [
+    {
+      "process": 1,
+      "field_key": "bxje"
+    }
+  ],
+  "selected": []
 }

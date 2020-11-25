@@ -1,7 +1,10 @@
 package com.asarao.common.process;
 
 import lombok.extern.slf4j.Slf4j;
-import org.camunda.bpm.engine.*;
+import org.camunda.bpm.engine.HistoryService;
+import org.camunda.bpm.engine.RepositoryService;
+import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.history.HistoricTaskInstance;
 import org.camunda.bpm.engine.impl.RepositoryServiceImpl;
 import org.camunda.bpm.engine.impl.ServiceImpl;
@@ -145,5 +148,20 @@ public class TaskFlowControlService extends ServiceImpl {
         //实现跳转
         commandExecutor.execute(new JumpCmd(instance.getId(),hisActivity.getId()));
         return hisTask.getProcessInstanceId();
+    }
+
+    public static void main(String[] args){
+//        String s = "{\"bxje\": \"99.58\", \"department_id\": \"7\"}";
+//        JSONObject jsonObject = JSONUtil.parseObj(s);
+//        Object bxje = jsonObject.get("bxje");
+//        Double bxje1 = jsonObject.getDouble("bxje");
+//        System.out.println( bxje instanceof String);
+//        System.out.println( bxje instanceof Double);
+//        Double aDouble = Double.valueOf(bxje.toString());
+//        jsonObject.set("bxje",aDouble);
+//        System.out.println(jsonObject);
+//        String ss = "#{bxje==1000}";
+//        ResourceUtils.getURL("classpath:").getPath()
+//        System.out.println(ResourceUtils.getURL("classpath:").getPath());
     }
 }

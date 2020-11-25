@@ -7,8 +7,21 @@
 </head>
 <body>
     <input id="submit" onclick="submit()" type="button" value="请求">
+    <button onclick="download()">下载</button>
 </body>
 <script>
+    $(function(){
+        function getQueryString(param){
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null){
+                alert('你下载的文件不存在！');
+            }
+        }
+
+        getQueryString("error");
+
+    });
     function submit() {
         var url = "http://localhost:8080/task-deal/create";
         var params = {
@@ -42,6 +55,9 @@
             function (data) {
             console.log(data);
         },"json")
+    }
+    function download() {
+        window.location.href = "http://127.0.0.1:8080/fk/task-manage/export-pdf-have-done-tasks?userId=73&companyId=1&departmentId=5";
     }
 </script>
 </html>

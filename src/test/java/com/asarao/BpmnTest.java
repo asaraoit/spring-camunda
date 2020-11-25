@@ -3,6 +3,8 @@ package com.asarao;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.impl.bpmn.deployer.BpmnDeployer;
@@ -33,6 +35,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 
@@ -245,6 +248,8 @@ public class BpmnTest {
         BpmnModelInstance modelInstance = Bpmn.createEmptyModel();
 
         Definitions definitions = modelInstance.newInstance(Definitions.class);
+        String typeLanguage = definitions.getTypeLanguage();
+        System.out.println(typeLanguage);
 
         definitions.setTargetNamespace("http://camunda.org/examples");
         modelInstance.setDefinitions(definitions);
@@ -302,8 +307,9 @@ public class BpmnTest {
         parallel.setCamundaElementVariable("assignee");
         SequenceFlow flow_B = createSequenceFlow(process, exclusiveGateway, parallelUserTask);
         ConditionExpression c_B = modelInstance.newInstance(ConditionExpression.class);
-        c_B.setType("");
         c_B.setTextContent("#{project=='B'}");
+        String type = c_B.getType();
+        System.out.println(type);
         flow_A.setConditionExpression(c_B);
 
 

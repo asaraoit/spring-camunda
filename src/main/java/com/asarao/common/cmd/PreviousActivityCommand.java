@@ -5,14 +5,15 @@ import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.impl.interceptor.Command;
 import org.camunda.bpm.engine.impl.interceptor.CommandContext;
-import org.camunda.bpm.engine.impl.persistence.entity.*;
-import org.camunda.bpm.engine.impl.pvm.process.ActivityImpl;
+import org.camunda.bpm.engine.impl.persistence.entity.TaskEntity;
+import org.camunda.bpm.engine.impl.persistence.entity.TaskManager;
 import org.camunda.bpm.model.bpmn.instance.FlowNode;
 import org.camunda.bpm.model.bpmn.instance.SequenceFlow;
 import org.camunda.bpm.model.bpmn.instance.UserTask;
-import org.camunda.bpm.model.xml.type.ModelElementType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /*
  * @ClassName: PreviousActivityCommand
@@ -28,7 +29,7 @@ public class PreviousActivityCommand implements Command<String> {
 
     private HistoryService historyService;
 
-    public PreviousActivityCommand(String taskId,HistoryService historyService){
+    public PreviousActivityCommand(String taskId, HistoryService historyService){
         this.taskId = taskId;
         this.historyService = historyService;
     }
@@ -48,12 +49,13 @@ public class PreviousActivityCommand implements Command<String> {
         }
         UserTask elementInstance = currentTask.getBpmnModelElementInstance();
         Collection<SequenceFlow> outgoing = elementInstance.getOutgoing();
-//        SequenceFlow sequenceFlow = elementInstance.getOutgoing().iterator().next();
         List<String> lasts = new ArrayList<>();
         getLastUserTask(lasts, outgoing);
-        System.out.println(lasts);
+        log.info("当前任务节点的后续任务节点：{}",lasts);
 
-//        String nextUserTaskId = sequenceFlow.getTarget().getId();
+        // 将当前任务节点也加入此列表
+        lasts.add(taskDefinitionKey);
+
 
         List<HistoricActivityInstance> userTask = historyService.createHistoricActivityInstanceQuery()
                 .processInstanceId(currentTask.getProcessInstanceId())
@@ -65,19 +67,17 @@ public class PreviousActivityCommand implements Command<String> {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < userTask.size(); i++) {
             String activityId = userTask.get(i).getActivityId();
-            log.info("节点：{}",activityId);
             if(taskDefinitionKey.equals(activityId)){
                 String pre = userTask.get(i - 1).getActivityId();
                 if(!lasts.contains(pre)){
-                   list.add(pre);
+                    list.add(pre);
                 }
-//                if(!pre.equals(nextUserTaskId)){
-//                    list.add(pre);
-//                }
             }
         }
         if(!list.isEmpty()){
-            return list.get(list.size() -1);
+            String previousActivityId = list.get(list.size() - 1);
+            log.info("当前任务的上一任务节点为:{}",previousActivityId);
+            return previousActivityId;
         }
         return null;
     }
